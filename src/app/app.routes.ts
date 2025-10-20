@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { SignUp } from './components/sign-up/sign-up';
+import { StepBasic } from './components/step-basic/step-basic';
 
 export const routes: Routes = [
     { path: '', redirectTo:'/signup', pathMatch: 'full'},
@@ -14,9 +15,12 @@ export const routes: Routes = [
             {
                 path: 'method',
                 component: SignUp
+            },
+            {
+                path: 'basic',
+                component: StepBasic
             }
     ] },
-    // { path: 'emailsignin', component: EmailSignIn },
     // { path: 'additional', component: Additional },
     // { path: 'rules', component: Rules }
 ];

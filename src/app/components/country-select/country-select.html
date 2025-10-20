@@ -1,0 +1,23 @@
+<div class="form-field" [class.invalid]="isInvalid">
+    <label [for]="id()">{{ label() }}</label>
+    <select
+        [id]="id()"
+        [value]="value"
+        [disabled]="disabled"
+        (change)="onChangeEvent($event)"
+        (blur)="onTouched()"
+        [class.error]="isInvalid"
+        >
+        <option value="">Выберите страну</option>
+        @for (country of countries; track country.phoneCode) {
+            <option [value]="country.code">
+                {{ country.name }}
+            </option>
+        }
+    </select>
+    @if (isInvalid && errorMessage()) {
+        <div class="error-message">
+        {{ errorMessage() }}
+        </div>
+    }
+</div>

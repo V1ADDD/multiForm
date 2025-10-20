@@ -1,0 +1,65 @@
+<div class="step-container">
+    <h2>Основные данные</h2>
+    
+    <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
+
+    <app-custom-input
+        label="Email"
+        type="email"
+        id="email"
+        placeholder="Введите ваш email"
+        formControlName="email"
+        [required]="true"
+        errorMessage="Введите корректный email">
+    </app-custom-input>
+
+    <app-custom-input
+        label="Имя"
+        type="text"
+        id="name"
+        placeholder="Введите ваше имя"
+        formControlName="name"
+        [required]="true"
+        [minLength]="2"
+        errorMessage="Имя должно содержать минимум 2 символа без спецсимволов">
+    </app-custom-input>
+
+    <app-country-select
+        label="Страна"
+        id="country"
+        formControlName="country"
+        [required]="true"
+        errorMessage="Пожалуйста, выберите страну"
+        (countryChange)="onCountryChange($event)">
+    </app-country-select>
+
+    @if (showPhoneField) {
+        <app-custom-input
+            label="Телефон"
+            type="tel"
+            id="phone"
+            placeholder="Введите номер телефона"
+            formControlName="phone"
+            errorMessage="Введите корректный номер телефона">
+        </app-custom-input>
+    }
+    
+
+    <div class="navigation-buttons">
+        <button 
+        type="button" 
+        class="btn-secondary" 
+        (click)="goBack()">
+        Назад
+        </button>
+        
+        <button 
+        type="submit" 
+        class="btn-primary" 
+        [disabled]="!basicInfoForm.valid">
+        Далее
+        </button>
+    </div>
+
+    </form>
+</div>
