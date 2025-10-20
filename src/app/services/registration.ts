@@ -17,6 +17,7 @@ export class Registration {
     this.data = { ...this.data, ...updates };
     this.saveToStorage();
     this.dataSubject.next(this.data);
+    console.log(this.data)
   }
 
   public getCurrentData(): RegistrationData {
@@ -25,6 +26,16 @@ export class Registration {
 
   private saveToStorage(): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+  }
+
+  public getFormData(): Partial<RegistrationData> {
+    return this.data;
+  }
+  
+  public resetFormData(): void {
+    this.data = {};
+    this.saveToStorage();
+    this.dataSubject.next(this.data);
   }
 
   private loadFromStorage(): RegistrationData {

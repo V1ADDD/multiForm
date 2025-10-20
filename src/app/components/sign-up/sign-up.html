@@ -1,34 +1,54 @@
 <div class="step-container">
     <h2>Выберите способ регистрации</h2>
-    <div class="method-options">
-        <div class="method-card">
-            <div class="method-icon">...</div>
-            <h3>Email</h3>
-            <p>Регистрация с помощью email</p>
+    <form [formGroup]="methodForm" (ngSubmit)="onSubmit()">
+        <div class="method-options">
+            <div class="method-card" [class.selected]="methodForm.get('method')?.value === 'email'" (click)="selectMethod('email')">
+                <div class="method-icon">📧</div>
+                <h3>Email</h3>
+                <p>Регистрация с помощью email</p>
+            </div>
+            <div class="method-card" [class.selected]="methodForm.get('method')?.value === 'social'" (click)="selectMethod('social')">
+                <div class="method-icon">🌐</div>
+                <h3>Социальные сети</h3>
+                <p>Быстрая регистрация через социальные сети</p>
+            </div>
         </div>
-        <div class="method-card">
-            <div class="method-icon">...</div>
-            <h3>Социальные сети</h3>
-            <p>Быстрая регистрация через социальные сети</p>
-        </div>
-    </div>
-    <div class="social-buttons">
-        <p>Выберите социальную сеть:</p>
-        <div class="social-options">
-            <button class="social-btn google">
-                <span class="social-icon">...</span>Google
-            </button>
-            <button class="social-btn meta">
-                <span class="social-icon">...</span>Meta
-            </button>
-            <button class="social-btn github">
-                <span class="social-icon">...</span>Github
-            </button>
-        </div>
-    </div>
-    <div class="navigation">
-        <button class="btn-primary">
-            Продолжить с Email
-        </button>
-    </div>
+        <input type="hidden" formControlName="method">
+        @if (methodForm.get("method")?.value === "social") {
+            <div class="social-buttons">
+                <p>Выберите социальную сеть:</p>
+                <div class="social-options">
+                    <button 
+                        class="social-btn google" 
+                        (click)="mockSocialLogin('google')" 
+                        [class.selected]="methodForm.get('socialProvider')?.value === 'google'">
+                        <span class="social-icon">🤖</span>Google
+                    </button>
+                    <button 
+                        class="social-btn meta" 
+                        (click)="mockSocialLogin('meta')" 
+                        [class.selected]="methodForm.get('socialProvider')?.value === 'meta'">
+                        <span class="social-icon">Ⓜ️</span>Meta
+                    </button>
+                    <button 
+                        class="social-btn github" 
+                        (click)="mockSocialLogin('github')"
+                        [class.selected]="methodForm.get('socialProvider')?.value === 'github'">
+                        <span class="social-icon">👨🏻‍💻</span>Github
+                    </button>
+                </div>
+                <input type="hidden" formControlName="socialProvider">
+            </div>
+        }
+        @if (methodForm.get("method")?.value === "email") {
+            <div class="navigation">
+                <button 
+                    type="submit"    
+                    class="btn-primary"
+                    [disabled]="!methodForm.valid">
+                    Продолжить с Email
+                </button>
+            </div>
+        }
+    </form>
 </div>
