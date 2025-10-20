@@ -1,5 +1,5 @@
 export type RegistrationData = {
-    method: 'email' | 'social',
+    method?: 'email' | 'social',
     basicInfo?: BasicInfo,
     additionalInfo?: AdditionalInfo,
     confirmation?: Confirmation,
