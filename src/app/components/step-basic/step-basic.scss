@@ -1,3 +1,5 @@
+@use '../../styles/variables' as v;
+
 .step-container {
   max-width: 500px;
   margin: 0 auto;
@@ -7,7 +9,7 @@
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #333;
+  color: v.$label_color;
 }
 
 form {
@@ -24,8 +26,8 @@ form {
 }
 
 .btn-primary {
-  background: #2196f3;
-  color: white;
+  background: v.$color_2;
+  color: v.$background;
   border: none;
   padding: 0.75rem 2rem;
   border-radius: 6px;
@@ -35,19 +37,19 @@ form {
   flex: 1;
 
   &:hover:not(:disabled) {
-    background: #1976d2;
+    background: v.$color_2;
   }
 
   &:disabled {
-    background: #ccc;
+    background: v.$disabled_color;
     cursor: not-allowed;
   }
 }
 
 .btn-secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
+  background: v.$sec_background;
+  color: v.$label_color;
+  border: 1px solid v.$sec_border;
   padding: 0.75rem 2rem;
   border-radius: 6px;
   font-size: 1rem;
@@ -56,14 +58,14 @@ form {
   flex: 1;
 
   &:hover {
-    background: #e0e0e0;
+    background: v.$color_1;
   }
 }
 
 .form-debug {
   margin-top: 2rem;
   padding: 1rem;
-  background: #f5f5f5;
+  background: v.$sec_background;
   border-radius: 4px;
   font-family: monospace;
   font-size: 0.8rem;

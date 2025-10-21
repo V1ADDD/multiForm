@@ -1,3 +1,5 @@
+@use '../../styles/variables' as v;
+
 .step-container {
     max-width: 500px;
     margin: 0 auto;
@@ -7,7 +9,7 @@
 h2 {
     text-align: center;
     margin-bottom: 2rem;
-    color: #333;
+    color: v.$label_color;
 }
 
 .method-options {
@@ -18,27 +20,27 @@ h2 {
 }
 
 .method-card {
-    border: 2px solid #e0e0e0;
+    border: 2px solid v.$color_1;
     border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    background: white;
+    background: v.$background;
 
     h3 {
         margin: 0.5rem 0;
-        color: #333;
+        color: v.$label_color;
     }
 
     p {
         margin: 0;
-        color: #666;
+        color: v.$label_color_2;
         font-size: 0.9rem;
     }
 
     &:hover {
-        border-color: #2196f3;
+        border-color: v.$color_2;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
     }
@@ -56,7 +58,7 @@ h2 {
 .social-buttons {
     margin: 2rem 0;
     padding: 1.5rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid v.$color_1;
     border-radius: 8px;
     background: #f9f9f9;
 
@@ -78,27 +80,27 @@ h2 {
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid v.$sec_border;
     border-radius: 6px;
-    background: white;
+    background: v.$background;
     cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover {
-        background: #f5f5f5;
+        background: v.$sec_background;
         transform: translateY(-1px);
     }
 
     &.google:hover {
-        border-color: #db4437;
+        border-color: v.$error_color;
     }
 
     &.meta:hover {
-        border-color: #1877f2;
+        border-color: v.$color_2;
     }
 
     &.github:hover {
-        border-color: #333;
+        border-color: v.$label_color;
     }
 }
 
@@ -112,8 +114,8 @@ h2 {
 }
 
 .btn-primary {
-    background: #2196f3;
-    color: white;
+    background: v.$color_2;
+    color: v.$background;
     border: none;
     padding: 0.75rem 2rem;
     border-radius: 6px;
@@ -122,11 +124,11 @@ h2 {
     transition: background 0.2s ease;
 
     &:hover:not(:disabled) {
-        background: #1976d2;
+        background: v.$color_2;
     }
 
     &:disabled {
-        background: #ccc;
+        background: v.$disabled_color;
         cursor: not-allowed;
     }
 }
