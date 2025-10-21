@@ -71,8 +71,8 @@ export class SignUp implements OnInit {
       basicInfo: {
         email: 'john@doe.com',
         name: 'John Doe',
-        country: 'Беларусь',
-        phone: '+375291112233'
+        country: 'by',
+        phone: '(029) 111-22-33'
       },
       additionalInfo: {
         address: {

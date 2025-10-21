@@ -1,10 +1,11 @@
 import { Component, forwardRef } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { input } from '@angular/core';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-custom-input',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgxMaskDirective],
   templateUrl: './custom-input.html',
   styleUrl: './custom-input.scss',
   providers: [
@@ -17,7 +18,8 @@ import { input } from '@angular/core';
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => CustomInput),
       multi: true
-    }
+    },
+    provideNgxMask()
   ]
 })
 export class CustomInput implements ControlValueAccessor, Validator {

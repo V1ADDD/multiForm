@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   selector: 'app-step-basic',
   imports: [ReactiveFormsModule, CustomInput, CountrySelect],
   templateUrl: './step-basic.html',
-  styleUrl: './step-basic.scss'
+  styleUrl: './step-basic.scss',
 })
 export class StepBasic implements OnInit {
   public basicInfoForm: FormGroup;
@@ -48,8 +48,9 @@ export class StepBasic implements OnInit {
   }
 
   private createForm(): FormGroup {
+    const customEmailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
     return this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern(customEmailPattern)]],
       name: ['', [Validators.required, Validators.minLength(2)]],
       country: ['', Validators.required],
       phone: ['']

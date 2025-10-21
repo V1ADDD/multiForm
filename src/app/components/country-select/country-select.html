@@ -10,8 +10,8 @@
         >
         <option value="">Выберите страну</option>
         @for (country of countries; track country.phoneCode) {
-            <option [value]="country.code">
-                {{ country.name }}
+            <option [value]="country.code" [selected]="country.code === value">
+                ({{country.phoneCode}}) {{ country.name }}
             </option>
         }
     </select>
