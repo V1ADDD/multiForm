@@ -27,14 +27,17 @@ export class SignUp implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.dataService.clearData();
+    // Отслеживаем изменения формы
     this.methodForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$)) // не придумал как сделать с '| async'
       .subscribe(value => {
         this.dataService.updateData(value);
       })
   }
 
   private createForm(): FormGroup {
+    // Форма с единственным полем, выбора метода (через почту или сторонние сервисы)
+    // Возможно излишне, мб поменять попроще
     return this.fb.group({
       method: ['', Validators.required]
     });
@@ -47,6 +50,7 @@ export class SignUp implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    // Переходим к шагу basic если валидна (случаев для невалидности по сути нет, т.к. кнопки нет, но пусть пока будет)
     if (this.methodForm.valid) {
       this.dataService.updateData(this.methodForm.value);
 
@@ -59,6 +63,7 @@ export class SignUp implements OnInit, OnDestroy {
   }
 
   public mockSocialLogin(): void {
+    // Переходим сразу к additional, если через соц сети, мб переделать чтоб тоже по сабмиту
     const mockData: RegistrationData = mockUser;
 
     this.dataService.updateData(mockData);
@@ -67,9 +72,11 @@ export class SignUp implements OnInit, OnDestroy {
   }
 
   private markFormGroupTouched(): void {
-    Object.values(this.methodForm.controls).forEach(control => {
+    // Помечаем форму, типа взаимодействовали
+    Object.keys(this.methodForm.controls).forEach(key => {
+      const control = this.methodForm.get(key);
       control?.markAsTouched();
-    })
+    });
   }
 
   public ngOnDestroy(): void {

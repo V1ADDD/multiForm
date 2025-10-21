@@ -3,6 +3,7 @@ import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR
 import { input } from '@angular/core';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
+// Отдельный компонент для кастомных форм
 @Component({
   selector: 'app-custom-input',
   imports: [ReactiveFormsModule, NgxMaskDirective],
@@ -63,14 +64,17 @@ export class CustomInput implements ControlValueAccessor, Validator {
     this.disabled = isDisabled;
   }
 
+  // Валидация
   public validate(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
 
+    // Проверка для required
     if (this.required() && !value) {
       this.isInvalid = true;
       return { required: true };
     }
 
+    // Проверка для minLength
     if (value && this.minLength() && value.length < <number>this.minLength()) {
       this.isInvalid = true;
       return {
@@ -81,11 +85,13 @@ export class CustomInput implements ControlValueAccessor, Validator {
       };
     }
 
+    // Проверка регексов
     if (value && this.pattern() && !new RegExp(<string>this.pattern()).test(value)) {
       this.isInvalid = true;
       return { pattern: true };
     }
 
+    // Если нигде не было ошибок, то this.inValid -> false
     this.isInvalid = false;
     return null;
   }

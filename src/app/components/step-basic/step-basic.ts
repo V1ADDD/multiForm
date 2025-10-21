@@ -26,6 +26,7 @@ export class StepBasic implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    // Подгружаем значения с ls
     const currentData = this.dataService.getCurrentData();
 
     if (currentData.basicInfo) {
@@ -36,6 +37,7 @@ export class StepBasic implements OnInit, OnDestroy {
       }
     }
 
+    // Отслеживаем изменения формы, дебаунс для того чтобы не отслеживать постоянно, а только когда завершили ввод чего-то
     this.basicInfoForm.valueChanges
       .pipe(takeUntil(this.destroy$),
             debounceTime(1000))
@@ -43,6 +45,7 @@ export class StepBasic implements OnInit, OnDestroy {
         this.dataService.updateData({ basicInfo: value });
     });
 
+    // Отслеживаем изменения country, чтоб отображать ввод телефона
     this.basicInfoForm.get('country')?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(country => {
@@ -55,6 +58,7 @@ export class StepBasic implements OnInit, OnDestroy {
   }
 
   private createForm(): FormGroup {
+    // валидация email, name через регехи и прочая валидация
     const customEmailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
     const namePattern = '^[a-zA-Zа-яА-Я0-9]+$';
     return this.fb.group({
@@ -66,11 +70,12 @@ export class StepBasic implements OnInit, OnDestroy {
   }
 
   public onCountryChange(countryCode: string): void {
+    // по смене страны что делать с отображением номера ->
     this.showPhoneField = !!countryCode;
-    console.log('Selected country:', countryCode);
   }
 
   public onSubmit(): void {
+    // переход к additional
     if (this.basicInfoForm.valid) {
       this.dataService.updateData({ basicInfo: this.basicInfoForm.value });
       this.router.navigate(['/signup', 'additional']);
@@ -79,6 +84,7 @@ export class StepBasic implements OnInit, OnDestroy {
     }
   }
 
+  // возвращаемся к началу
   public goBack(): void {
     this.router.navigate(['/signup', 'method']);
   }
@@ -95,6 +101,7 @@ export class StepBasic implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // геттеры возможно пригодятся
   public get email() { return this.basicInfoForm.get('email'); }
   public get name() { return this.basicInfoForm.get('name'); }
   public get country() { return this.basicInfoForm.get('country'); }

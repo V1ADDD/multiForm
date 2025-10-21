@@ -11,6 +11,7 @@ export class Registration {
   private data: RegistrationData = {};
   private dataSubject = new BehaviorSubject<RegistrationData>(this.loadFromStorage());
 
+  // Обновление данных в ls
   public updateData(updates: Partial<RegistrationData>): void {
     this.data = { ...this.data, ...updates };
     this.saveToStorage();
@@ -18,29 +19,23 @@ export class Registration {
     console.log(this.data)
   }
 
+  // Получение текущих данных
   public getCurrentData(): RegistrationData {
     return { ...this.data };
   }
 
+  // Сохранить в ls
   private saveToStorage(): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
   }
-
-  public getFormData(): Partial<RegistrationData> {
-    return this.data;
-  }
   
-  public resetFormData(): void {
-    this.data = {};
-    this.saveToStorage();
-    this.dataSubject.next(this.data);
-  }
-
+  // Подгруаем с ls
   private loadFromStorage(): RegistrationData {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     return stored ? JSON.parse(stored) : {};
   }
 
+  // чистим
   public clearData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     this.data = {};

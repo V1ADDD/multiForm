@@ -1,5 +1,6 @@
 import { Country, RegistrationData } from "./registration-types";
 
+// список стран для выбора
 export const countries: Country[] = [
     { code: 'by', name: 'Беларусь', phoneCode: '+375' },
     { code: 'ru', name: 'Россия', phoneCode: '+7' },
@@ -12,6 +13,7 @@ export const countries: Country[] = [
     { code: 'cn', name: 'Китай', phoneCode: '+86' }
 ];
 
+// моковый юсер
 export const mockUser: RegistrationData = {
     method: 'social',
     basicInfo: {

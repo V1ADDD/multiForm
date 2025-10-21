@@ -1,3 +1,4 @@
+// Данные общие
 export type RegistrationData = {
     method?: 'email' | 'social',
     basicInfo?: BasicInfo,
@@ -5,6 +6,7 @@ export type RegistrationData = {
     confirmation?: Confirmation
 }
 
+// Первый-второй шаг
 export type BasicInfo = {
     email: string,
     name: string,
@@ -12,6 +14,7 @@ export type BasicInfo = {
     phone?: string
 }
 
+// Третий шаг
 export type AdditionalInfo = {
     address: Address,
     birthDate: Date,
@@ -30,6 +33,7 @@ export type ParentInfo = {
     email: string
 }
 
+// Четвертый шаг
 export type Confirmation = {
     acceptTerms: boolean,
     acceptPrivacy: boolean,

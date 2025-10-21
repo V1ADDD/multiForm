@@ -3,6 +3,7 @@ import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR
 import { countries } from '../../models/mock-data';
 import { Country } from '../../models/registration-types';
 
+// Отдельный компонент для выбора страны
 @Component({
   selector: 'app-country-select',
   imports: [ReactiveFormsModule],
@@ -42,6 +43,7 @@ export class CountrySelect implements ControlValueAccessor, Validator {
     const value = (event.target as HTMLSelectElement).value;
     this.value = value;
     this.onChange(value);
+    // Прокидываем строку в родителя (в step-basic) для последующего отображения input'a для телефона
     this.countryChange.emit(value);
     this.validateControl();
   }

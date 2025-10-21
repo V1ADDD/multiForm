@@ -4,7 +4,7 @@ import { StepBasic } from './components/step-basic/step-basic';
 
 export const routes: Routes = [
     { path: '', redirectTo:'/signup', pathMatch: 'full'},
-    { 
+    { //method -> basic -> additional -> rules
         path: 'signup', 
         children: [
             {
