@@ -20,24 +20,21 @@
                 <div class="social-options">
                     <button 
                         class="social-btn google" 
-                        (click)="mockSocialLogin('google')" 
-                        [class.selected]="methodForm.get('socialProvider')?.value === 'google'">
+                        (click)="mockSocialLogin()">
                         <span class="social-icon">🤖</span>Google
                     </button>
                     <button 
                         class="social-btn meta" 
-                        (click)="mockSocialLogin('meta')" 
-                        [class.selected]="methodForm.get('socialProvider')?.value === 'meta'">
+                        (click)="mockSocialLogin()">
                         <span class="social-icon">Ⓜ️</span>Meta
                     </button>
                     <button 
+                        type="submit"
                         class="social-btn github" 
-                        (click)="mockSocialLogin('github')"
-                        [class.selected]="methodForm.get('socialProvider')?.value === 'github'">
+                        (click)="mockSocialLogin()">
                         <span class="social-icon">👨🏻‍💻</span>Github
                     </button>
                 </div>
-                <input type="hidden" formControlName="socialProvider">
             </div>
         }
         @if (methodForm.get("method")?.value === "email") {

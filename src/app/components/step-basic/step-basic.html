@@ -9,6 +9,7 @@
         id="email"
         placeholder="Введите ваш email"
         formControlName="email"
+        [pattern]="'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'"
         [required]="true"
         errorMessage="Введите корректный email">
     </app-custom-input>
@@ -19,6 +20,7 @@
         id="name"
         placeholder="Введите ваше имя"
         formControlName="name"
+        [pattern]="'^[a-zA-Zа-яА-Я0-9]+$'"
         [required]="true"
         [minLength]="2"
         errorMessage="Имя должно содержать минимум 2 символа без спецсимволов">

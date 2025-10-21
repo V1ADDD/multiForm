@@ -11,8 +11,6 @@ export class Registration {
   private data: RegistrationData = {};
   private dataSubject = new BehaviorSubject<RegistrationData>(this.loadFromStorage());
 
-  public data$ = this.dataSubject.asObservable();
-
   public updateData(updates: Partial<RegistrationData>): void {
     this.data = { ...this.data, ...updates };
     this.saveToStorage();

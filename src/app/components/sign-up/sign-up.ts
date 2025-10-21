@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Registration } from '../../services/registration';
 import { RegistrationData } from '../../models/registration-types';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { mockUser } from '../../models/mock-data';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,9 +12,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss'
 })
-export class SignUp implements OnInit {
+export class SignUp implements OnInit, OnDestroy {
   public methodForm: FormGroup;
   public selectedMethod: 'email' | 'social' | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -24,30 +26,23 @@ export class SignUp implements OnInit {
   }
 
   public ngOnInit(): void {
-    const currentData = this.dataService.getCurrentData();
-    if (currentData.method) {
-      this.methodForm.patchValue({
-        method: currentData.method,
-        socialProvider: currentData.socialProvider || null
-      });
-    }
-    
-    this.methodForm.valueChanges.subscribe(value => {
-      this.dataService.updateData(value);
-    })
+    this.dataService.clearData();
+    this.methodForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.dataService.updateData(value);
+      })
   }
 
   private createForm(): FormGroup {
     return this.fb.group({
-      method: ['', Validators.required],
-      socialProvider: ['']
+      method: ['', Validators.required]
     });
   }
 
   public selectMethod(method: 'email' | 'social'): void {
     this.methodForm.patchValue({
-      method,
-      socialProvider: method === 'email' ? null : this.methodForm.get('socialProvider')?.value
+      method
     });
   }
 
@@ -63,27 +58,8 @@ export class SignUp implements OnInit {
     }
   }
 
-  public mockSocialLogin(provider: string): void {
-    this.methodForm.patchValue({ socialProvider: provider });
-    const mockData: RegistrationData = {
-      method: 'social',
-      socialProvider: provider,
-      basicInfo: {
-        email: 'john@doe.com',
-        name: 'John Doe',
-        country: 'by',
-        phone: '(029) 111-22-33'
-      },
-      additionalInfo: {
-        address: {
-          country: 'Беларусь',
-          city: 'Минск',
-          street: 'Жукова'
-        },
-        birthDate: new Date('1990-01-01'),
-        gender: 'другой'
-      }
-    };
+  public mockSocialLogin(): void {
+    const mockData: RegistrationData = mockUser;
 
     this.dataService.updateData(mockData);
 
@@ -91,9 +67,13 @@ export class SignUp implements OnInit {
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.methodForm.controls).forEach(key => {
-      const control = this.methodForm.get(key);
+    Object.values(this.methodForm.controls).forEach(control => {
       control?.markAsTouched();
     })
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

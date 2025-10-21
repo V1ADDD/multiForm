@@ -1,3 +1,7 @@
+$error_collor: #d32f2f;
+$color_1: #e0e0e0;
+$color_2: #2196f3;
+
 .form-field {
   margin-bottom: 1.5rem;
 
@@ -11,18 +15,18 @@
   input {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid #e0e0e0;
+    border: 2px solid $color_1;
     border-radius: 6px;
     font-size: 1rem;
     transition: border-color 0.2s ease;
 
     &:focus {
       outline: none;
-      border-color: #2196f3;
+      border-color: $color_2;
     }
 
     &.error {
-      border-color: #d32f2f;
+      border-color: $error_collor;
     }
 
     &:disabled {
@@ -33,13 +37,13 @@
 
   &.invalid {
     label {
-      color: #d32f2f;
+      color: $error_collor;
     }
   }
 }
 
 .error-message {
-  color: #d32f2f;
+  color: $error_collor;
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }

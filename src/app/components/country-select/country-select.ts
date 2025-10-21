@@ -1,11 +1,7 @@
 import { Component, forwardRef, input, output } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
-
-type Country = {
-  code: string;
-  name: string;
-  phoneCode: string;
-}
+import { countries } from '../../models/mock-data';
+import { Country } from '../../models/registration-types';
 
 @Component({
   selector: 'app-country-select',
@@ -36,17 +32,7 @@ export class CountrySelect implements ControlValueAccessor, Validator {
   public disabled = false;
   public isInvalid = false;
 
-  public countries: Country[] = [
-    { code: 'by', name: 'Беларусь', phoneCode: '+375' },
-    { code: 'ru', name: 'Россия', phoneCode: '+7' },
-    { code: 'us', name: 'США', phoneCode: '+1' },
-    { code: 'de', name: 'Германия', phoneCode: '+49' },
-    { code: 'fr', name: 'Франция', phoneCode: '+33' },
-    { code: 'it', name: 'Италия', phoneCode: '+39' },
-    { code: 'es', name: 'Испания', phoneCode: '+34' },
-    { code: 'jp', name: 'Япония', phoneCode: '+81' },
-    { code: 'cn', name: 'Китай', phoneCode: '+86' }
-  ];
+  public countries: Country[] = countries;
 
   public onChange = (value: string) => {};
   public onTouched = () => {};

@@ -2,8 +2,7 @@ export type RegistrationData = {
     method?: 'email' | 'social',
     basicInfo?: BasicInfo,
     additionalInfo?: AdditionalInfo,
-    confirmation?: Confirmation,
-    socialProvider?: string
+    confirmation?: Confirmation
 }
 
 export type BasicInfo = {
@@ -38,3 +37,9 @@ export type Confirmation = {
 }
 
 export type RegistrationStep = 'method' | 'basic' | 'additional' | 'confirmation';
+
+export type Country = {
+  code: string;
+  name: string;
+  phoneCode: string;
+}
