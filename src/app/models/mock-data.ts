@@ -1,4 +1,4 @@
-import { Country, RegistrationData } from "./registration-types";
+import { Country, RegistrationData, Field } from "./registration-types";
 
 // список стран для выбора
 export const countries: Country[] = [
@@ -12,6 +12,34 @@ export const countries: Country[] = [
     { code: 'jp', name: 'Япония', phoneCode: '+81' },
     { code: 'cn', name: 'Китай', phoneCode: '+86' }
 ];
+
+// список полей формы step basic
+export const stepBasicFields: Field[] = [
+    {
+        label: 'Email',
+        name: 'email',
+        type: 'email',
+        errorMes: 'Введите корректный email'
+    },
+    {
+        label: 'Имя',
+        name: 'name',
+        type: 'text',
+        errorMes: 'Имя должно содержать минимум 2 символа без спецсимволов'
+    },
+    {
+        label: 'Страна',
+        name: 'country',
+        type: 'select',
+        errorMes: 'Пожалуйста, выберите страну'
+    },
+    {
+        label: 'Телефон',
+        name: 'phone',
+        type: 'tel',
+        errorMes: 'Введите корректный номер телефона'
+    },
+]
 
 // моковый юсер
 export const mockUser: RegistrationData = {

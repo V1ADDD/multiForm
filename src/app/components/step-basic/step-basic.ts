@@ -1,20 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CustomInput } from '../custom-input/custom-input';
-import { CountrySelect } from '../country-select/country-select';
 import { Registration } from '../../services/registration';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { stepBasicFields, countries } from '../../models/mock-data';
+import { LowerCasePipe } from '@angular/common';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-step-basic',
-  imports: [ReactiveFormsModule, CustomInput, CountrySelect],
+  imports: [ReactiveFormsModule, LowerCasePipe, NgxMaskDirective],
   templateUrl: './step-basic.html',
   styleUrl: './step-basic.scss',
+  providers: [
+    provideNgxMask()
+  ]
 })
 export class StepBasic implements OnInit, OnDestroy {
   public basicInfoForm: FormGroup;
   public showPhoneField = false;
+  public fields = stepBasicFields;
+  public countries = countries;
   private destroy$ = new Subject<void>();
 
   constructor(
