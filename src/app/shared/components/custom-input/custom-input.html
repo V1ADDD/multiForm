@@ -1,31 +1,26 @@
 <div class="form-field" [class.invalid]="invalid()">
-    <label [for]="name()">{{ label() }}</label>
-    @if (type() === 'select') {
-        <select
-        id="{{name()}}"
-        (change)="onInputChange($event)"
-        value="" [class.error]="invalid()">
-        <option value="">Пожалуйста, выберите</option>
-        @for (country of countries; track country.phoneCode) {
-            <option value="{{ country.code }}">
-                ({{country.phoneCode}}) {{ country.name }}
-            </option>
-        }
-        </select>
-    }
-    @else {
-        <input 
-        (input)="onInputChange($event)"
-        id="{{name()}}"
-        type="{{type()}}"
-        placeholder="Введите {{label() | lowercase}}"
-        [mask]="inputMask()"
-        [class.error]="invalid()">
-    }
-    
-    @if (invalid()) {
-        <div class="error-message">
-            {{ errorMes() }}
-        </div>
-    }
+  <label [for]="name()">{{ label() }}</label>
+  @if (type() === 'select') {
+    <select id="{{ name() }}" (change)="onInputChange($event)" value="" [class.error]="invalid()">
+      <option value="">Пожалуйста, выберите</option>
+      @for (country of countries; track country.phoneCode) {
+        <option value="{{ country.code }}">({{ country.phoneCode }}) {{ country.name }}</option>
+      }
+    </select>
+  } @else {
+    <input
+      (input)="onInputChange($event)"
+      id="{{ name() }}"
+      type="{{ type() }}"
+      placeholder="Введите {{ label() | lowercase }}"
+      [mask]="inputMask()"
+      [class.error]="invalid()"
+    />
+  }
+
+  @if (invalid()) {
+    <div class="error-message">
+      {{ errorMes() }}
+    </div>
+  }
 </div>

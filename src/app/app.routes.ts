@@ -20,7 +20,8 @@ export const routes: Routes = [
                 path: 'basic',
                 component: StepBasic
             }
-    ] },
+        ] 
+    }
     // { path: 'additional', component: Additional },
     // { path: 'rules', component: Rules }
 ];

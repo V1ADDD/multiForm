@@ -1,51 +1,56 @@
 <div class="step-container">
-    <h2>Выберите способ регистрации</h2>
-    <form [formGroup]="methodForm" (ngSubmit)="onSubmit()">
-        <div class="method-options">
-            <div class="method-card" [class.selected]="methodForm.get('method')?.value === 'email'" (click)="selectMethod('email')">
-                <div class="method-icon">📧</div>
-                <h3>Email</h3>
-                <p>Регистрация с помощью email</p>
-            </div>
-            <div class="method-card" [class.selected]="methodForm.get('method')?.value === 'social'" (click)="selectMethod('social')">
-                <div class="method-icon">🌐</div>
-                <h3>Социальные сети</h3>
-                <p>Быстрая регистрация через социальные сети</p>
-            </div>
-        </div>
-        <input type="hidden" formControlName="method">
-        @if (methodForm.get("method")?.value === "social") {
-            <div class="social-buttons">
-                <p>Выберите социальную сеть:</p>
-                <div class="social-options">
-                    <button 
-                        class="social-btn google" 
-                        (click)="mockSocialLogin()">
-                        <span class="social-icon">🤖</span>Google
-                    </button>
-                    <button 
-                        class="social-btn meta" 
-                        (click)="mockSocialLogin()">
-                        <span class="social-icon">Ⓜ️</span>Meta
-                    </button>
-                    <button 
-                        type="submit"
-                        class="social-btn github" 
-                        (click)="mockSocialLogin()">
-                        <span class="social-icon">👨🏻‍💻</span>Github
-                    </button>
-                </div>
-            </div>
-        }
-        @if (methodForm.get("method")?.value === "email") {
-            <div class="navigation">
-                <button 
-                    type="submit"    
-                    class="btn-primary"
-                    [disabled]="!methodForm.valid">
-                    Продолжить с Email
-                </button>
-            </div>
-        }
-    </form>
+  <h2>Выберите способ регистрации</h2>
+  <form [formGroup]="methodForm" (ngSubmit)="onSubmit()">
+    <div class="method-options">
+      <div
+        class="method-card"
+        [class.selected]="methodForm.get('method')?.value === 'email'"
+        (click)="selectMethod('email')"
+        (keydown.enter)="selectMethod('email')"
+        (keydown.space)="selectMethod('email')"
+        tabindex="0"
+        role="button"
+      >
+        <div class="method-icon">📧</div>
+        <h3>Email</h3>
+        <p>Регистрация с помощью email</p>
+      </div>
+      <div
+        class="method-card"
+        [class.selected]="methodForm.get('method')?.value === 'social'"
+        (click)="selectMethod('social')"
+        (keydown.enter)="selectMethod('social')"
+        (keydown.space)="selectMethod('social')"
+        tabindex="0"
+        role="button"
+      >
+        <div class="method-icon">🌐</div>
+        <h3>Социальные сети</h3>
+        <p>Быстрая регистрация через социальные сети</p>
+      </div>
+    </div>
+    <input type="hidden" formControlName="method" />
+    @if (methodForm.get('method')?.value === 'social') {
+    <div class="social-buttons">
+      <p>Выберите социальную сеть:</p>
+      <div class="social-options">
+        <button class="social-btn google" (click)="mockSocialLogin()">
+          <span class="social-icon">🤖</span>Google
+        </button>
+        <button class="social-btn meta" (click)="mockSocialLogin()">
+          <span class="social-icon">Ⓜ️</span>Meta
+        </button>
+        <button type="submit" class="social-btn github" (click)="mockSocialLogin()">
+          <span class="social-icon">👨🏻‍💻</span>Github
+        </button>
+      </div>
+    </div>
+    } @if (methodForm.get('method')?.value === 'email') {
+    <div class="navigation">
+      <button type="submit" class="btn-primary" [disabled]="!methodForm.valid">
+        Продолжить с Email
+      </button>
+    </div>
+    }
+  </form>
 </div>

@@ -1,5 +1,5 @@
 // Данные общие
-export type RegistrationData = {
+export interface RegistrationData {
     method?: 'email' | 'social',
     basicInfo?: BasicInfo,
     additionalInfo?: AdditionalInfo,
@@ -7,7 +7,7 @@ export type RegistrationData = {
 }
 
 // Первый-второй шаг
-export type BasicInfo = {
+export interface BasicInfo {
     email: string,
     name: string,
     country: string,
@@ -15,26 +15,26 @@ export type BasicInfo = {
 }
 
 // Третий шаг
-export type AdditionalInfo = {
+export interface AdditionalInfo {
     address: Address,
     birthDate: Date,
     gender: string,
     parentInfo?: ParentInfo
 }
 
-export type Address = {
+export interface Address {
     country: string,
     city: string,
     street: string
 }
 
-export type ParentInfo = {
+export interface ParentInfo {
     name: string,
     email: string
 }
 
 // Четвертый шаг
-export type Confirmation = {
+export interface Confirmation {
     acceptTerms: boolean,
     acceptPrivacy: boolean,
     subscribe: boolean
@@ -42,7 +42,7 @@ export type Confirmation = {
 
 export type RegistrationStep = 'method' | 'basic' | 'additional' | 'confirmation';
 
-export type Country = {
+export interface Country {
   code: string;
   name: string;
   phoneCode: string;

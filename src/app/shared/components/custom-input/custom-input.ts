@@ -30,25 +30,25 @@ export class CustomInput implements ControlValueAccessor {
 
   public countries = countries;
 
-  public onChange: any = () => {};
-  public onTouched: any = () => {};
+  public onChange: ((value: string) => void) | null = null;
+  public onTouched: (() => void) | null = null;
 
   public onInputChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.value = value;
-    this.onChange(value);
-    this.onTouched();
+    this.onChange?.(value);
+    this.onTouched?.();
   }
 
   public writeValue(value: string): void {
     this.value = value || '';
   }
 
-  public registerOnChange(fn: any): void {
+  public registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 }

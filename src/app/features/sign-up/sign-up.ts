@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Registration } from '../../shared/services/registration';
 import { RegistrationData } from '../../shared/models/registration-types';
@@ -16,12 +16,11 @@ export class SignUp implements OnInit, OnDestroy {
   public methodForm: FormGroup;
   public selectedMethod: 'email' | 'social' | null = null;
   private destroy$ = new Subject<void>();
+  private fb = inject(FormBuilder);
+  private dataService = inject(Registration);
+  private router = inject(Router);
 
-  constructor(
-    private fb: FormBuilder,
-    private dataService: Registration,
-    private router: Router
-  ) {
+  constructor() {
     this.methodForm = this.createForm();
   }
 

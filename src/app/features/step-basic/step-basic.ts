@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Registration } from '../../shared/services/registration';
 import { Router } from '@angular/router';
@@ -24,12 +24,11 @@ export class StepBasic implements OnInit, OnDestroy {
   public countries = countries;
   private destroy$ = new Subject<void>();
   private errors = formErrors;
+  private fb = inject(FormBuilder);
+  private dataService = inject(Registration);
+  private router = inject(Router);
 
-  constructor(
-    private fb: FormBuilder,
-    private dataService: Registration,
-    private router: Router
-  ) {
+  constructor() {
     this.basicInfoForm = this.createForm();
   }
 
