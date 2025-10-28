@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Registration } from '../../services/registration';
+import { Registration } from '../../shared/services/registration';
 import { RegistrationData } from '../../shared/models/registration-types';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { mockUser } from '../../shared/models/mock-data';

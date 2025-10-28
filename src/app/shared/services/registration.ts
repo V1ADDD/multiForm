@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RegistrationData } from '../shared/models/registration-types';
+import { RegistrationData } from '../models/registration-types';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
