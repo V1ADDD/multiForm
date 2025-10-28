@@ -47,10 +47,3 @@ export type Country = {
   name: string;
   phoneCode: string;
 }
-
-export type Field = {
-    label: string;
-    name: string;
-    type: string;
-    errorMes: string;
-}

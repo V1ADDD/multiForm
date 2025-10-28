@@ -5,7 +5,7 @@
         id="{{name()}}"
         (change)="onInputChange($event)"
         value="" [class.error]="invalid()">
-        <option value="">{{ errorMes() }}</option>
+        <option value="">Пожалуйста, выберите</option>
         @for (country of countries; track country.phoneCode) {
             <option value="{{ country.code }}">
                 ({{country.phoneCode}}) {{ country.name }}

@@ -3,10 +3,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Registration } from '../../shared/services/registration';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { stepBasicFields, countries } from '../../shared/models/mock-data';
+import { countries } from '../../shared/models/mock-data';
 import { LowerCasePipe } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
+import { formErrors } from '../../shared/models/errors';
 
 @Component({
   selector: 'app-step-basic',
@@ -20,9 +21,9 @@ import { CustomInput } from '../../shared/components/custom-input/custom-input';
 export class StepBasic implements OnInit, OnDestroy {
   public basicInfoForm: FormGroup;
   public showPhoneField = false;
-  public fields = stepBasicFields;
   public countries = countries;
   private destroy$ = new Subject<void>();
+  private errors = formErrors;
 
   constructor(
     private fb: FormBuilder,
@@ -74,6 +75,36 @@ export class StepBasic implements OnInit, OnDestroy {
       country: ['', Validators.required],
       phone: ['']
     });
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const control = this.basicInfoForm.get(fieldName);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+
+    for (const errorKey in errors) {
+      if (this.errors[errorKey]) {
+        let message = this.errors[errorKey];
+        switch (errorKey) {
+          case 'minlength':
+            message += errors[errorKey].requiredLength;
+            break;
+          case 'pattern':
+            switch (fieldName) {
+              case ('name'):
+                message += '. Имя не должно содержать спец. символы';
+                break;
+              case ('email'):
+                message += ' email';
+                break;
+            }
+        }
+        return message;
+      }
+    }
+
+    return 'Некорректное значение';
   }
 
   public onCountryChange(countryCode: string): void {

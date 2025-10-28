@@ -1,24 +1,54 @@
 <div class="step-container">
     <h2>Основные данные</h2>
     <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
-        @for (field of fields; track field) {
-            @if (field.type !== 'tel' || (field.type==='tel' && showPhoneField)) {
-                <app-custom-input
-                    formControlName="{{field.name}}"
-                    [label]="field.label"
-                    [name]="field.name"
-                    [type]="field.type"
-                    [errorMes]="field.errorMes"
-                    [inputMask]="field.type === 'tel' ? 
-                                (basicInfoForm.get('country')?.value === 'by' ?
-                                '(00) 000-00-00' : '(000) 000-00-00')
-                                : undefined"
-                    [invalid]="basicInfoForm.get(field.name)?.invalid &&
-                                (basicInfoForm.get(field.name)?.dirty ||
-                                basicInfoForm.get(field.name)?.touched)
-                                "></app-custom-input>
-            }
+        <app-custom-input 
+            formControlName="email"
+            [label]="'Email'"
+            [name]="'email'"
+            [type]="'email'"
+            [errorMes]="getErrorMessage('email')"
+            [invalid]="basicInfoForm.get('email')?.invalid &&
+                (basicInfoForm.get('email')?.dirty ||
+                basicInfoForm.get('email')?.touched)"
+        ></app-custom-input>
+
+        <app-custom-input 
+            formControlName="name"
+            [label]="'Имя'"
+            [name]="'name'"
+            [type]="'text'"
+            [errorMes]="getErrorMessage('name')"
+            [invalid]="basicInfoForm.get('name')?.invalid &&
+                (basicInfoForm.get('name')?.dirty ||
+                basicInfoForm.get('name')?.touched)"
+        ></app-custom-input>
+
+        <app-custom-input 
+            formControlName="country"
+            [label]="'Страна'"
+            [name]="'country'"
+            [type]="'select'"
+            [errorMes]="getErrorMessage('country')"
+            [invalid]="basicInfoForm.get('country')?.invalid &&
+                (basicInfoForm.get('country')?.dirty ||
+                basicInfoForm.get('country')?.touched)"
+        ></app-custom-input>
+
+        @if (showPhoneField) {
+            <app-custom-input 
+                formControlName="phone"
+                [label]="'Телефон'"
+                [name]="'phone'"
+                [type]="'tel'"
+                [errorMes]="getErrorMessage('phone')"
+                [inputMask]="basicInfoForm.get('country')?.value === 'by' ?
+                            '(00) 000-00-00' : '(000) 000-00-00'"
+                [invalid]="basicInfoForm.get('phone')?.invalid &&
+                    (basicInfoForm.get('phone')?.dirty ||
+                    basicInfoForm.get('phone')?.touched)"
+            ></app-custom-input>
         }
+        
         <div class="navigation-buttons">
             <button 
             type="button" 
