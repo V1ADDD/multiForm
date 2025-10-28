@@ -6,10 +6,11 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { stepBasicFields, countries } from '../../models/mock-data';
 import { LowerCasePipe } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { CustomInput } from '../custom-input/custom-input';
 
 @Component({
   selector: 'app-step-basic',
-  imports: [ReactiveFormsModule, LowerCasePipe, NgxMaskDirective],
+  imports: [ReactiveFormsModule, LowerCasePipe, NgxMaskDirective, CustomInput],
   templateUrl: './step-basic.html',
   styleUrl: './step-basic.scss',
   providers: [
