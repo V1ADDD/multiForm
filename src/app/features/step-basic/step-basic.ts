@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Registration } from '../../services/registration';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { stepBasicFields, countries } from '../../models/mock-data';
+import { stepBasicFields, countries } from '../../shared/models/mock-data';
 import { LowerCasePipe } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CustomInput } from '../custom-input/custom-input';

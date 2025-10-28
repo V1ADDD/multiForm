@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { SignUp } from './components/sign-up/sign-up';
-import { StepBasic } from './components/step-basic/step-basic';
+import { SignUp } from './features/sign-up/sign-up';
+import { StepBasic } from './features/step-basic/step-basic';
 
 export const routes: Routes = [
     { path: '', redirectTo:'/signup', pathMatch: 'full'},

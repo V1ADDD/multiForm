@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Registration } from '../../services/registration';
-import { RegistrationData } from '../../models/registration-types';
+import { RegistrationData } from '../../shared/models/registration-types';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { mockUser } from '../../models/mock-data';
+import { mockUser } from '../../shared/models/mock-data';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
