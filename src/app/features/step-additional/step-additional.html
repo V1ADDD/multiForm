@@ -1,0 +1,91 @@
+<div class="step-container">
+  <h2>Дополнительные данные</h2>
+  <form [formGroup]="additionalInfoForm" (ngSubmit)="onSubmit()">
+    <app-custom-input
+      formControlName="addressCountry"
+      [label]="'Страна'"
+      [name]="'addressCountry'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('addressCountry')"
+      [invalid]="
+        additionalInfoForm.get('addressCountry')?.invalid &&
+        (additionalInfoForm.get('addressCountry')?.dirty || additionalInfoForm.get('addressCountry')?.touched)
+      "
+    ></app-custom-input>
+    <app-custom-input
+      formControlName="addressCity"
+      [label]="'Город'"
+      [name]="'addressCity'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('addressCity')"
+      [invalid]="
+        additionalInfoForm.get('addressCity')?.invalid &&
+        (additionalInfoForm.get('addressCity')?.dirty || additionalInfoForm.get('addressCity')?.touched)
+      "
+    ></app-custom-input>
+    <app-custom-input
+      formControlName="addressStreet"
+      [label]="'Улица'"
+      [name]="'addressStreet'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('addressStreet')"
+      [invalid]="
+        additionalInfoForm.get('addressStreet')?.invalid &&
+        (additionalInfoForm.get('addressStreet')?.dirty || additionalInfoForm.get('addressStreet')?.touched)
+      "
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="birthDate"
+      [label]="'Дата рождения'"
+      [name]="'birthDate'"
+      [type]="'date'"
+      [errorMes]="getErrorMessage('birthDate')"
+      [invalid]="
+        additionalInfoForm.get('birthDate')?.invalid &&
+        (additionalInfoForm.get('birthDate')?.dirty || additionalInfoForm.get('birthDate')?.touched)
+      "
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="sex"
+      [label]="'Пол'"
+      [name]="'sex'"
+      [type]="'select'"
+      [errorMes]="getErrorMessage('sex')"
+      [invalid]="
+        additionalInfoForm.get('sex')?.invalid &&
+        (additionalInfoForm.get('sex')?.dirty || additionalInfoForm.get('sex')?.touched)
+      "
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="parentName"
+      [label]="'Имя законного представителя'"
+      [name]="'parentName'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('parentName')"
+      [invalid]="
+        additionalInfoForm.get('parentName')?.invalid &&
+        (additionalInfoForm.get('parentName')?.dirty || additionalInfoForm.get('parentName')?.touched)
+      "
+    ></app-custom-input>
+    <app-custom-input
+      formControlName="parentEmail"
+      [label]="'Email законного представителя'"
+      [name]="'parentEmail'"
+      [type]="'email'"
+      [errorMes]="getErrorMessage('parentEmail')"
+      [invalid]="
+        additionalInfoForm.get('parentEmail')?.invalid &&
+        (additionalInfoForm.get('parentEmail')?.dirty || additionalInfoForm.get('parentEmail')?.touched)
+    "
+    ></app-custom-input>
+
+    <div class="navigation-buttons">
+      <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
+
+      <button type="submit" class="btn-primary" [disabled]="!additionalInfoForm.valid">Далее</button>
+    </div>
+  </form>
+</div>

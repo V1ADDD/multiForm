@@ -21,14 +21,5 @@ export const mockUser: RegistrationData = {
         name: 'John Doe',
         country: 'by',
         phone: '(029) 111-22-33'
-    },
-    additionalInfo: {
-        address: {
-            country: 'Беларусь',
-            city: 'Минск',
-            street: 'Жукова'
-        },
-        birthDate: new Date('1990-01-01'),
-        gender: 'другой'
     }
 }

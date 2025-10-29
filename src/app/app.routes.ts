@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { SignUp } from './features/sign-up/sign-up';
 import { StepBasic } from './features/step-basic/step-basic';
+import { StepAdditional } from './features/step-additional/step-additional';
 
 export const routes: Routes = [
     { path: '', redirectTo:'/signup', pathMatch: 'full'},
@@ -19,9 +20,12 @@ export const routes: Routes = [
             {
                 path: 'basic',
                 component: StepBasic
+            },
+            {
+                path: 'additional',
+                component: StepAdditional
             }
         ] 
     }
-    // { path: 'additional', component: Additional },
     // { path: 'rules', component: Rules }
 ];
