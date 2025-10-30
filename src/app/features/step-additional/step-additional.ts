@@ -5,16 +5,20 @@ import { Router } from '@angular/router';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { formErrors } from '../../shared/models/errors';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { DateValidators } from '../../shared/models/date-validators';
 
 @Component({
   selector: 'app-step-additional',
-  imports: [ReactiveFormsModule, CustomInput],
+  imports: [ReactiveFormsModule, CustomInput, DatePipe],
   templateUrl: './step-additional.html',
   styleUrl: './step-additional.scss'
 })
 export class StepAdditional implements OnInit, OnDestroy {
   public additionalInfoForm: FormGroup;
   public showParentFields = false;
+  public minDate = '1900-01-01';
+  public maxDate = new Date();
 
   private destroy$ = new Subject<void>();
   private fb = inject(FormBuilder);
@@ -49,24 +53,35 @@ export class StepAdditional implements OnInit, OnDestroy {
     this.additionalInfoForm.get('birthDate')?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(birthDate => {
-        this.showParentFields = this.getAge(new Date(birthDate)) >= 18;
-        if (!this.showParentFields) {
-          this.additionalInfoForm.patchValue({ parentName: '', parentEmail: '' });
+        if (!this.additionalInfoForm.get('birthDate')?.invalid) {
+          this.showParentFields = this.getAge(new Date(birthDate)) < 18;
+          const parentName = this.additionalInfoForm.get('parentName');
+          const parentEmail = this.additionalInfoForm.get('parentEmail');
+          if (!this.showParentFields) {
+            this.additionalInfoForm.patchValue({ parentName: '', parentEmail: '' });
+            parentName?.clearValidators();
+            parentEmail?.clearValidators();
+          } else {
+            const customEmailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+            const namePattern = '^[a-zA-Zа-яА-Я0-9]+$';
+            parentName?.setValidators([Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]);
+            parentEmail?.setValidators([Validators.required, Validators.pattern(customEmailPattern)]);
+          }
+          parentName?.updateValueAndValidity();
+          parentEmail?.updateValueAndValidity();
         }
     })
   }
 
   private createForm(): FormGroup {
-    const customEmailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
-    const namePattern = '^[a-zA-Zа-яА-Я0-9]+$';
     return this.fb.group({
-      addressCountry: ['', [Validators.required]],
-      addressCity: ['', [Validators.required]],
-      addressStreet: ['', [Validators.required]],
-      birthDate: ['', [Validators.required]],
+      addressCountry: ['', Validators.required],
+      addressCity: ['', Validators.required],
+      addressStreet: ['', Validators.required],
+      birthDate: ['', [Validators.required, DateValidators.minDate(this.minDate), DateValidators.maxDate(this.maxDate.toString())]],
       gender: ['', Validators.required],
-      parentName: ['', [Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]],
-      parentEmail: ['', [Validators.required, Validators.pattern(customEmailPattern)]]
+      parentName: [''],
+      parentEmail: ['']
     });
   }
 
@@ -92,6 +107,7 @@ export class StepAdditional implements OnInit, OnDestroy {
                 message += ' email';
                 break;
             }
+            break;
         }
         return message;
       }

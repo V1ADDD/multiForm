@@ -40,6 +40,8 @@
       [label]="'Дата рождения'"
       [name]="'birthDate'"
       [type]="'date'"
+      [min]="minDate"
+      [max]="(maxDate | date:'yyyy-MM-dd') || undefined"
       [errorMes]="getErrorMessage('birthDate')"
       [invalid]="
         additionalInfoForm.get('birthDate')?.invalid &&

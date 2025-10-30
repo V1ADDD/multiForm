@@ -13,6 +13,12 @@ export const countries: Country[] = [
     { code: 'cn', name: 'Китай', phoneCode: '+86' }
 ];
 
+export const genders: string[] = [
+    'Мужской',
+    'Женский',
+    'Другой'
+]
+
 // моковый юсер
 export const mockUser: RegistrationData = {
     method: 'social',

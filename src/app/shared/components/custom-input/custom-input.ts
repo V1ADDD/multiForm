@@ -1,5 +1,5 @@
 import { Component, forwardRef, input } from '@angular/core';
-import { countries } from '../../models/mock-data';
+import { countries, genders } from '../../models/mock-data';
 import { LowerCasePipe } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -27,8 +27,11 @@ export class CustomInput implements ControlValueAccessor {
   public errorMes = input<string>();
   public invalid = input<boolean>();
   public inputMask = input<string>();
+  public min = input<string>();
+  public max = input<string>();
 
   public countries = countries;
+  public genders = genders;
 
   public onChange: ((value: string) => void) | null = null;
   public onTouched: (() => void) | null = null;

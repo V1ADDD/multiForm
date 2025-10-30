@@ -4,19 +4,14 @@ import { Registration } from '../../shared/services/registration';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { countries } from '../../shared/models/mock-data';
-import { LowerCasePipe } from '@angular/common';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { formErrors } from '../../shared/models/errors';
 
 @Component({
   selector: 'app-step-basic',
-  imports: [ReactiveFormsModule, LowerCasePipe, NgxMaskDirective, CustomInput],
+  imports: [ReactiveFormsModule, CustomInput],
   templateUrl: './step-basic.html',
   styleUrl: './step-basic.scss',
-  providers: [
-    provideNgxMask()
-  ]
 })
 export class StepBasic implements OnInit, OnDestroy {
   public basicInfoForm: FormGroup;
