@@ -48,39 +48,41 @@
     ></app-custom-input>
 
     <app-custom-input
-      formControlName="sex"
+      formControlName="gender"
       [label]="'Пол'"
-      [name]="'sex'"
+      [name]="'gender'"
       [type]="'select'"
-      [errorMes]="getErrorMessage('sex')"
+      [errorMes]="getErrorMessage('gender')"
       [invalid]="
-        additionalInfoForm.get('sex')?.invalid &&
-        (additionalInfoForm.get('sex')?.dirty || additionalInfoForm.get('sex')?.touched)
+        additionalInfoForm.get('gender')?.invalid &&
+        (additionalInfoForm.get('gender')?.dirty || additionalInfoForm.get('gender')?.touched)
       "
     ></app-custom-input>
 
-    <app-custom-input
-      formControlName="parentName"
-      [label]="'Имя законного представителя'"
-      [name]="'parentName'"
-      [type]="'text'"
-      [errorMes]="getErrorMessage('parentName')"
-      [invalid]="
-        additionalInfoForm.get('parentName')?.invalid &&
-        (additionalInfoForm.get('parentName')?.dirty || additionalInfoForm.get('parentName')?.touched)
-      "
-    ></app-custom-input>
-    <app-custom-input
-      formControlName="parentEmail"
-      [label]="'Email законного представителя'"
-      [name]="'parentEmail'"
-      [type]="'email'"
-      [errorMes]="getErrorMessage('parentEmail')"
-      [invalid]="
-        additionalInfoForm.get('parentEmail')?.invalid &&
-        (additionalInfoForm.get('parentEmail')?.dirty || additionalInfoForm.get('parentEmail')?.touched)
-    "
-    ></app-custom-input>
+    @if (showParentFields) {
+      <app-custom-input
+        formControlName="parentName"
+        [label]="'Имя законного представителя'"
+        [name]="'parentName'"
+        [type]="'text'"
+        [errorMes]="getErrorMessage('parentName')"
+        [invalid]="
+            additionalInfoForm.get('parentName')?.invalid &&
+            (additionalInfoForm.get('parentName')?.dirty || additionalInfoForm.get('parentName')?.touched)
+        "
+      ></app-custom-input>
+      <app-custom-input
+        formControlName="parentEmail"
+        [label]="'Email законного представителя'"
+        [name]="'parentEmail'"
+        [type]="'email'"
+        [errorMes]="getErrorMessage('parentEmail')"
+        [invalid]="
+            additionalInfoForm.get('parentEmail')?.invalid &&
+            (additionalInfoForm.get('parentEmail')?.dirty || additionalInfoForm.get('parentEmail')?.touched)
+        "
+      ></app-custom-input>
+    }
 
     <div class="navigation-buttons">
       <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>

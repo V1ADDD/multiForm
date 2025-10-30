@@ -16,21 +16,13 @@ export interface BasicInfo {
 
 // Третий шаг
 export interface AdditionalInfo {
-    address: Address,
+    addressCountry: string,
+    addressCity: string,
+    addressStreet: string,
     birthDate: Date,
     gender: string,
-    parentInfo?: ParentInfo
-}
-
-export interface Address {
-    country: string,
-    city: string,
-    street: string
-}
-
-export interface ParentInfo {
-    name: string,
-    email: string
+    parentName?: string,
+    parentEmail?: string
 }
 
 // Четвертый шаг

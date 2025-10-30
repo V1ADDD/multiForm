@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Registration } from '../../shared/services/registration';
 import { Router } from '@angular/router';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { formErrors } from '../../shared/models/errors';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-step-additional',
@@ -11,9 +12,11 @@ import { formErrors } from '../../shared/models/errors';
   templateUrl: './step-additional.html',
   styleUrl: './step-additional.scss'
 })
-export class StepAdditional {
+export class StepAdditional implements OnInit, OnDestroy {
   public additionalInfoForm: FormGroup;
+  public showParentFields = false;
 
+  private destroy$ = new Subject<void>();
   private fb = inject(FormBuilder);
   private dataService = inject(Registration);
   private router = inject(Router);
@@ -21,6 +24,36 @@ export class StepAdditional {
 
   constructor() {
     this.additionalInfoForm = this.createForm();
+  }
+
+  public ngOnInit(): void {
+    const currentData = this.dataService.getCurrentData();
+    
+    if (currentData.additionalInfo) {
+      this.additionalInfoForm.patchValue(currentData.additionalInfo);
+
+      if (currentData.additionalInfo.birthDate && 
+          this.getAge(currentData.additionalInfo.birthDate)) 
+      {
+        this.showParentFields = true;
+      }
+    }
+
+    this.additionalInfoForm.valueChanges
+      .pipe(takeUntil(this.destroy$),
+            debounceTime(1000))
+      .subscribe(value => {
+        this.dataService.updateData({ additionalInfo: value });
+    });
+
+    this.additionalInfoForm.get('birthDate')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(birthDate => {
+        this.showParentFields = this.getAge(new Date(birthDate)) >= 18;
+        if (!this.showParentFields) {
+          this.additionalInfoForm.patchValue({ parentName: '', parentEmail: '' });
+        }
+    })
   }
 
   private createForm(): FormGroup {
@@ -31,7 +64,7 @@ export class StepAdditional {
       addressCity: ['', [Validators.required]],
       addressStreet: ['', [Validators.required]],
       birthDate: ['', [Validators.required]],
-      sex: ['', Validators.required],
+      gender: ['', Validators.required],
       parentName: ['', [Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]],
       parentEmail: ['', [Validators.required, Validators.pattern(customEmailPattern)]]
     });
@@ -70,7 +103,7 @@ export class StepAdditional {
   public onSubmit(): void {
     // переход к additional
     if (this.additionalInfoForm.valid) {
-      this.dataService.updateData({ basicInfo: this.additionalInfoForm.value });
+      this.dataService.updateData({ additionalInfo: this.additionalInfoForm.value });
       this.router.navigate(['/signup', 'confirmation']);
     } else {
       this.markFormGroupTouched();
@@ -87,5 +120,21 @@ export class StepAdditional {
       const control = this.additionalInfoForm.get(key);
       control?.markAsTouched();
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  public getAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   }
 }
