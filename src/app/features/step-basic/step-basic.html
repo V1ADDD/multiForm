@@ -44,9 +44,7 @@
         [name]="'phone'"
         [type]="'tel'"
         [errorMes]="getErrorMessage('phone')"
-        [inputMask]="
-          basicInfoForm.get('country')?.value === 'by' ? '(00) 000-00-00' : '(000) 000-00-00'
-        "
+        [inputMask]="'(000) 000-00-00'"
         [invalid]="
           basicInfoForm.get('phone')?.invalid &&
           (basicInfoForm.get('phone')?.dirty || basicInfoForm.get('phone')?.touched)
