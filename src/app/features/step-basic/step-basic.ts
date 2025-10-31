@@ -39,6 +39,8 @@ export class StepBasic implements OnInit, OnDestroy {
       }
     }
 
+    this.dataService.updateData({ basicInfo: { ...this.basicInfoForm.value, valid: false } });
+
     // Отслеживаем изменения формы, дебаунс для того чтобы не отслеживать постоянно, а только когда завершили ввод чего-то
     this.basicInfoForm.valueChanges
       .pipe(takeUntil(this.destroy$),
@@ -109,7 +111,7 @@ export class StepBasic implements OnInit, OnDestroy {
   public onSubmit(): void {
     // переход к additional
     if (this.basicInfoForm.valid) {
-      this.dataService.updateData({ basicInfo: this.basicInfoForm.value });
+      this.dataService.updateData({ basicInfo: { ...this.basicInfoForm.value, valid: true } });
       this.router.navigate(['/signup', 'additional']);
     } else {
       this.markFormGroupTouched();

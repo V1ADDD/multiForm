@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { formErrors } from '../../shared/models/errors';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { DateValidators } from '../../shared/models/date-validators';
 
 @Component({
@@ -24,6 +24,7 @@ export class StepAdditional implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private dataService = inject(Registration);
   private router = inject(Router);
+  private location = inject(Location);
   private errors = formErrors;
 
   constructor() {
@@ -33,6 +34,7 @@ export class StepAdditional implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
     if (!currentData.method) this.router.navigate(['/signup', 'method']);
+    if (!currentData.basicInfo?.valid) this.location.back();
     
     if (currentData.additionalInfo) {
       setTimeout(()=>this.additionalInfoForm.patchValue({...currentData.additionalInfo}));
@@ -42,6 +44,8 @@ export class StepAdditional implements OnInit, OnDestroy {
         this.showParentFields = true;
       }
     }
+
+    this.dataService.updateData({ additionalInfo: { ...this.additionalInfoForm.value, valid: false } });
 
     this.additionalInfoForm.valueChanges
       .pipe(takeUntil(this.destroy$),
@@ -118,7 +122,7 @@ export class StepAdditional implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     if (this.additionalInfoForm.valid) {
-      this.dataService.updateData({ additionalInfo: this.additionalInfoForm.value });
+      this.dataService.updateData({ additionalInfo: { ...this.additionalInfoForm.value, valid: true } });
       this.router.navigate(['/signup', 'rules']);
     } else {
       this.markFormGroupTouched();

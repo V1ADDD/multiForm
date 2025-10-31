@@ -26,6 +26,7 @@ export const mockUser: RegistrationData = {
         email: 'john@doe.com',
         name: 'John',
         country: 'by',
-        phone: '(029) 111-22-33'
+        phone: '(029) 111-22-33',
+        valid: true
     }
 }

@@ -5,6 +5,7 @@ import { Registration } from '../../shared/services/registration';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { formErrors } from '../../shared/models/errors';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-step-rules',
@@ -20,6 +21,7 @@ export class StepRules implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private dataService = inject(Registration);
   private router = inject(Router);
+  private location = inject(Location);
   private errors = formErrors;
 
   constructor() {
@@ -29,6 +31,7 @@ export class StepRules implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
     if (!currentData.method) this.router.navigate(['/signup', 'method']);
+    if (!currentData.additionalInfo?.valid || !currentData.basicInfo?.valid) this.location.back();
     
     if (currentData.confirmation) {
       setTimeout(()=>this.rulesInfoForm.patchValue({...currentData.confirmation}));

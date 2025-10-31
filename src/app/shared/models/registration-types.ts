@@ -11,7 +11,8 @@ export interface BasicInfo {
     email: string,
     name: string,
     country: string,
-    phone?: string
+    phone?: string,
+    valid: boolean
 }
 
 // Третий шаг
@@ -23,6 +24,7 @@ export interface AdditionalInfo {
     gender: string,
     parentName?: string,
     parentEmail?: string,
+    valid: boolean
 }
 
 // Четвертый шаг
