@@ -1,5 +1,7 @@
 <div class="form-field" [class.invalid]="invalid()">
-  <label [for]="name()">{{ label() }}</label>
+  @if (type() !== 'checkbox') {
+    <label [for]="name()">{{ label() }}</label>
+  }
   @if (type() === 'select') {
     <select id="{{ name() }}" (change)="onInputChange($event)" [value]="value" [class.error]="invalid()">
       <option value="">Пожалуйста, выберите</option>
@@ -22,10 +24,14 @@
       min="{{ min() }}"
       max="{{ max() }}"
       placeholder="Введите {{ label() | lowercase }}"
-      [value]="value" 
+      [value]="type() !== 'checkbox' ? value : ''" 
+      [checked]="type() === 'checkbox' ? value : ''"
       [mask]="inputMask()"
       [class.error]="invalid()"
     />
+  }
+  @if (type() === 'checkbox') {
+    <label [for]="name()">{{ label() }}</label>
   }
 
   @if (invalid()) {

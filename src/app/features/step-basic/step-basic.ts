@@ -30,9 +30,8 @@ export class StepBasic implements OnInit, OnDestroy {
   public ngOnInit(): void {
     // Подгружаем значения с ls
     const currentData = this.dataService.getCurrentData();
-
-    if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
     
+    if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
     if (currentData.basicInfo) {
       setTimeout(()=>this.basicInfoForm.patchValue({...currentData.basicInfo}));
       if (currentData.basicInfo.country) {

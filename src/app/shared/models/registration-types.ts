@@ -22,7 +22,7 @@ export interface AdditionalInfo {
     birthDate: Date,
     gender: string,
     parentName?: string,
-    parentEmail?: string
+    parentEmail?: string,
 }
 
 // Четвертый шаг

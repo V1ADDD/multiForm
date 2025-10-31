@@ -19,7 +19,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
   ]
 })
 export class CustomInput implements ControlValueAccessor {
-  public value = '';
+  public value: string | boolean = '';
 
   public label = input<string>();
   public name = input<string>();
@@ -33,20 +33,26 @@ export class CustomInput implements ControlValueAccessor {
   public countries = countries;
   public genders = genders;
 
-  public onChange: ((value: string) => void) | null = null;
+  public onChange: ((value: string | boolean) => void) | null = null;
   public onTouched: (() => void) | null = null;
 
   public onInputChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
+    const target = event.target as HTMLInputElement;
+    const value = this.type() === 'checkbox' ? target.checked : target.value;
     this.value = value;
     this.onChange?.(value);
   }
 
   public writeValue(value: string): void {
-    this.value = value || '';
+    if (this.type() === 'checkbox') {
+      const boolValue = !!value;
+      this.value = boolValue;
+    } else {
+      this.value = value || '';
+    }
   }
 
-  public registerOnChange(fn: (value: string) => void): void {
+  public registerOnChange(fn: (value: string | boolean) => void): void {
     this.onChange = fn;
   }
 

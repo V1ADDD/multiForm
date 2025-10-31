@@ -8,8 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 export class Registration {
   private readonly STORAGE_KEY = 'registration_data';
 
-  private data: RegistrationData = {};
-  private dataSubject = new BehaviorSubject<RegistrationData>(this.loadFromStorage());
+  private data: RegistrationData = this.loadFromStorage();
+  private dataSubject = new BehaviorSubject<RegistrationData>(this.data);
 
   // Обновление данных в ls
   public updateData(updates: Partial<RegistrationData>): void {
@@ -32,13 +32,13 @@ export class Registration {
   // Подгруаем с ls
   private loadFromStorage(): RegistrationData {
     const stored = localStorage.getItem(this.STORAGE_KEY);
-    return stored ? JSON.parse(stored) : {};
+    return stored ? JSON.parse(stored) : { };
   }
 
   // чистим
   public clearData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
-    this.data = {};
+    this.data = { };
     this.dataSubject.next(this.data);
   }
 }

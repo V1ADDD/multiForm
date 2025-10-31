@@ -32,7 +32,6 @@ export class StepAdditional implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
-
     if (!currentData.method) this.router.navigate(['/signup', 'method']);
     
     if (currentData.additionalInfo) {
@@ -118,10 +117,9 @@ export class StepAdditional implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    // переход к additional
     if (this.additionalInfoForm.valid) {
       this.dataService.updateData({ additionalInfo: this.additionalInfoForm.value });
-      this.router.navigate(['/signup', 'confirmation']);
+      this.router.navigate(['/signup', 'rules']);
     } else {
       this.markFormGroupTouched();
     }

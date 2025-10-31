@@ -2,10 +2,11 @@ import { Routes } from '@angular/router';
 import { SignUp } from './features/sign-up/sign-up';
 import { StepBasic } from './features/step-basic/step-basic';
 import { StepAdditional } from './features/step-additional/step-additional';
+import { StepRules } from './features/step-rules/step-rules';
 
 export const routes: Routes = [
     { path: '', redirectTo:'/signup', pathMatch: 'full'},
-    { //method -> basic -> additional -> rules
+    {
         path: 'signup', 
         children: [
             {
@@ -24,8 +25,12 @@ export const routes: Routes = [
             {
                 path: 'additional',
                 component: StepAdditional
+            },
+            {
+                path: 'rules',
+                component: StepRules
             }
         ] 
-    }
-    // { path: 'rules', component: Rules }
+    },
+    { path: '**', redirectTo: 'signup' },
 ];

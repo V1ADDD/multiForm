@@ -1,0 +1,44 @@
+<div class="step-container">
+  <h2>Подтверждение правил сервиса</h2>
+  <form [formGroup]="rulesInfoForm" (ngSubmit)="onSubmit()">
+    <app-custom-input
+        formControlName="acceptTerms"
+        [label]="'Я принимаю условия пользовательского соглашения'"
+        [name]="'acceptTerms'"
+        [type]="'checkbox'"
+        [errorMes]="getErrorMessage('acceptTerms')"
+        [invalid]="
+            rulesInfoForm.get('acceptTerms')?.invalid &&
+            (rulesInfoForm.get('acceptTerms')?.dirty || rulesInfoForm.get('acceptTerms')?.touched)
+        "
+    ></app-custom-input>
+    <app-custom-input
+        formControlName="acceptPrivacy"
+        [label]="'Я согласен на обработку персональных данных'"
+        [name]="'acceptPrivacy'"
+        [type]="'checkbox'"
+        [errorMes]="getErrorMessage('acceptPrivacy')"
+        [invalid]="
+            rulesInfoForm.get('acceptPrivacy')?.invalid &&
+            (rulesInfoForm.get('acceptPrivacy')?.dirty || rulesInfoForm.get('acceptPrivacy')?.touched)
+        "
+    ></app-custom-input>
+    <app-custom-input
+        formControlName="subscribe"
+        [label]="'Подписаться на рассылку (опционально)'"
+        [name]="'subscribe'"
+        [type]="'checkbox'"
+        [errorMes]="getErrorMessage('subscribe')"
+        [invalid]="
+            rulesInfoForm.get('subscribe')?.invalid &&
+            (rulesInfoForm.get('subscribe')?.dirty || rulesInfoForm.get('subscribe')?.touched)
+        "
+    ></app-custom-input>
+
+    <div class="navigation-buttons">
+      <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
+
+      <button type="submit" class="btn-primary" [disabled]="!rulesInfoForm.valid">Далее</button>
+    </div>
+  </form>
+</div>
