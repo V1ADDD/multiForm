@@ -40,7 +40,6 @@ export class CustomInput implements ControlValueAccessor {
     const value = (event.target as HTMLInputElement).value;
     this.value = value;
     this.onChange?.(value);
-    this.onTouched?.();
   }
 
   public writeValue(value: string): void {

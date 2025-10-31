@@ -1,7 +1,7 @@
 <div class="form-field" [class.invalid]="invalid()">
   <label [for]="name()">{{ label() }}</label>
   @if (type() === 'select') {
-    <select id="{{ name() }}" (change)="onInputChange($event)" value="" [class.error]="invalid()">
+    <select id="{{ name() }}" (change)="onInputChange($event)" [value]="value" [class.error]="invalid()">
       <option value="">Пожалуйста, выберите</option>
       @if (name() === 'gender') {
         @for (gender of genders; track gender) {
@@ -22,6 +22,7 @@
       min="{{ min() }}"
       max="{{ max() }}"
       placeholder="Введите {{ label() | lowercase }}"
+      [value]="value" 
       [mask]="inputMask()"
       [class.error]="invalid()"
     />

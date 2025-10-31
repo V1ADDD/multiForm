@@ -24,7 +24,7 @@ export const mockUser: RegistrationData = {
     method: 'social',
     basicInfo: {
         email: 'john@doe.com',
-        name: 'John Doe',
+        name: 'John',
         country: 'by',
         phone: '(029) 111-22-33'
     }

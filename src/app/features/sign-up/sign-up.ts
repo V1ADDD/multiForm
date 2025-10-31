@@ -25,7 +25,6 @@ export class SignUp implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.dataService.clearData();
     // Отслеживаем изменения формы
     this.methodForm.valueChanges
       .pipe(takeUntil(this.destroy$)) // не придумал как сделать с '| async'

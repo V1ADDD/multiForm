@@ -32,12 +32,10 @@ export class StepAdditional implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
-    
     if (currentData.additionalInfo) {
-      this.additionalInfoForm.patchValue(currentData.additionalInfo);
-
+      setTimeout(()=>this.additionalInfoForm.patchValue({...currentData.additionalInfo}));
       if (currentData.additionalInfo.birthDate && 
-          this.getAge(currentData.additionalInfo.birthDate)) 
+          this.getAge(new Date(currentData.additionalInfo.birthDate))) 
       {
         this.showParentFields = true;
       }
