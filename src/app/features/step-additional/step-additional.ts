@@ -32,6 +32,9 @@ export class StepAdditional implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
+
+    if (!currentData.method) this.router.navigate(['/signup', 'method']);
+    
     if (currentData.additionalInfo) {
       setTimeout(()=>this.additionalInfoForm.patchValue({...currentData.additionalInfo}));
       if (currentData.additionalInfo.birthDate && 
