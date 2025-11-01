@@ -1,6 +1,5 @@
 @use './variables' as v;
 
-
 .step-container {
   max-width: 500px;
   margin: 0 auto;
@@ -61,15 +60,6 @@ form {
   &:hover {
     background: v.$color_1;
   }
-}
-
-.form-debug {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: v.$sec_background;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.8rem;
 }
 
 app-custom-input {

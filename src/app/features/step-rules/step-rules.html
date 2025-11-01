@@ -8,6 +8,7 @@
         [type]="'checkbox'"
         [errorMes]="getErrorMessage('acceptTerms')"
         [invalid]="isFieldInvalid('acceptTerms')"
+        [required]="true"
     ></app-custom-input>
     <app-custom-input
         formControlName="acceptPrivacy"
@@ -16,10 +17,11 @@
         [type]="'checkbox'"
         [errorMes]="getErrorMessage('acceptPrivacy')"
         [invalid]="isFieldInvalid('acceptPrivacy')"
+        [required]="true"
     ></app-custom-input>
     <app-custom-input
         formControlName="subscribe"
-        [label]="'Подписаться на рассылку (опционально)'"
+        [label]="'Подписаться на рассылку'"
         [name]="'subscribe'"
         [type]="'checkbox'"
         [errorMes]="getErrorMessage('subscribe')"

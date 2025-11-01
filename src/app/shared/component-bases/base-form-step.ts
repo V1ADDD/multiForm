@@ -1,4 +1,4 @@
-import { inject, OnDestroy, OnInit } from '@angular/core';
+import { Directive, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Registration } from '../services/registration';
@@ -6,6 +6,7 @@ import { RegistrationStep } from '../models/registration-types';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FormError } from '../services/form-error';
 
+@Directive()
 export abstract class BaseFormStep implements OnInit, OnDestroy {
   protected abstract form: FormGroup;
   

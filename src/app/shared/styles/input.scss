@@ -7,6 +7,9 @@
     margin-bottom: 0.5rem;
     font-weight: 500;
     color: v.$label_color;
+    & > a {
+      color: v.$error_color;
+    }
   }
 
   input[type='checkbox'] {

@@ -8,6 +8,7 @@
       [type]="'email'"
       [errorMes]="getErrorMessage('email')"
       [invalid]="isFieldInvalid('email')"
+      [required]="true"
     ></app-custom-input>
 
     <app-custom-input
@@ -17,6 +18,7 @@
       [type]="'text'"
       [errorMes]="getErrorMessage('name')"
       [invalid]="isFieldInvalid('name')"
+      [required]="true"
     ></app-custom-input>
 
     <app-custom-input
@@ -26,6 +28,7 @@
       [type]="'select'"
       [errorMes]="getErrorMessage('country')"
       [invalid]="isFieldInvalid('country')"
+      [required]="true"
     ></app-custom-input>
 
     @if (showPhoneField) {

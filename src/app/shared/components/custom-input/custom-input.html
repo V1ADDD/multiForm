@@ -1,6 +1,10 @@
 <div class="form-field" [class.invalid]="invalid()">
   @if (type() !== 'checkbox') {
-    <label [for]="name()">{{ label() }}</label>
+    <label [for]="name()">{{ label() }}
+      @if (required()) {
+        <a>*</a>
+      }
+    </label>
   }
   @if (type() === 'select') {
     <select id="{{ name() }}" (change)="onInputChange($event)" [value]="value" [class.error]="invalid()">
@@ -31,7 +35,11 @@
     />
   }
   @if (type() === 'checkbox') {
-    <label [for]="name()">{{ label() }}</label>
+    <label [for]="name()">{{ label() }}
+      @if (required()) {
+        <a>*</a>
+      }
+    </label>
   }
 
   @if (invalid()) {

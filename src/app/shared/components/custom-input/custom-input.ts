@@ -29,6 +29,7 @@ export class CustomInput implements ControlValueAccessor {
   public inputMask = input<string>();
   public min = input<string>();
   public max = input<string>();
+  public required = input<boolean>();
 
   public countries = countries;
   public genders = genders;

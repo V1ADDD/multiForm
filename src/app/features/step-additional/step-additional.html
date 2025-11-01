@@ -8,6 +8,7 @@
       [type]="'text'"
       [errorMes]="getErrorMessage('addressCountry')"
       [invalid]="isFieldInvalid('addressCountry')"
+      [required]="true"
     ></app-custom-input>
     <app-custom-input
       formControlName="addressCity"
@@ -16,6 +17,7 @@
       [type]="'text'"
       [errorMes]="getErrorMessage('addressCity')"
       [invalid]="isFieldInvalid('addressCity')"
+      [required]="true"
     ></app-custom-input>
     <app-custom-input
       formControlName="addressStreet"
@@ -24,6 +26,7 @@
       [type]="'text'"
       [errorMes]="getErrorMessage('addressStreet')"
       [invalid]="isFieldInvalid('addressStreet')"
+      [required]="true"
     ></app-custom-input>
 
     <app-custom-input
@@ -35,6 +38,7 @@
       [max]="(maxDate | date:'yyyy-MM-dd') || undefined"
       [errorMes]="getErrorMessage('birthDate')"
       [invalid]="isFieldInvalid('birthDate')"
+      [required]="true"
     ></app-custom-input>
 
     <app-custom-input
@@ -44,6 +48,7 @@
       [type]="'select'"
       [errorMes]="getErrorMessage('gender')"
       [invalid]="isFieldInvalid('gender')"
+      [required]="true"
     ></app-custom-input>
 
     @if (showParentFields) {
@@ -54,6 +59,7 @@
         [type]="'text'"
         [errorMes]="getErrorMessage('parentName')"
         [invalid]="isFieldInvalid('parentName')"
+        [required]="true"
       ></app-custom-input>
       <app-custom-input
         formControlName="parentEmail"
@@ -62,6 +68,7 @@
         [type]="'email'"
         [errorMes]="getErrorMessage('parentEmail')"
         [invalid]="isFieldInvalid('parentEmail')"
+        [required]="true"
       ></app-custom-input>
     }
 
