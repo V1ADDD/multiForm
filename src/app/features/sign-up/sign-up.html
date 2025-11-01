@@ -1,10 +1,10 @@
 <div class="step-container">
   <h2>Выберите способ регистрации</h2>
-  <form [formGroup]="methodForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="method-options">
       <div
         class="method-card"
-        [class.selected]="methodForm.get('method')?.value === 'email'"
+        [class.selected]="form.get('method')?.value === 'email'"
         (click)="selectMethod('email')"
         (keydown.enter)="selectMethod('email')"
         (keydown.space)="selectMethod('email')"
@@ -17,7 +17,7 @@
       </div>
       <div
         class="method-card"
-        [class.selected]="methodForm.get('method')?.value === 'social'"
+        [class.selected]="form.get('method')?.value === 'social'"
         (click)="selectMethod('social')"
         (keydown.enter)="selectMethod('social')"
         (keydown.space)="selectMethod('social')"
@@ -30,7 +30,7 @@
       </div>
     </div>
     <input type="hidden" formControlName="method" />
-    @if (methodForm.get('method')?.value === 'social') {
+    @if (form.get('method')?.value === 'social') {
     <div class="social-buttons">
       <p>Выберите социальную сеть:</p>
       <div class="social-options">
@@ -45,9 +45,9 @@
         </button>
       </div>
     </div>
-    } @if (methodForm.get('method')?.value === 'email') {
+    } @if (form.get('method')?.value === 'email') {
     <div class="navigation">
-      <button type="submit" class="btn-primary" [disabled]="!methodForm.valid">
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">
         Продолжить с Email
       </button>
     </div>

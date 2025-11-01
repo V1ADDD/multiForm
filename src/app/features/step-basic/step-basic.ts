@@ -1,11 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Registration } from '../../shared/services/registration';
-import { Router } from '@angular/router';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { countries } from '../../shared/models/mock-data';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
-import { formErrors } from '../../shared/models/errors';
+import { BaseFormStep } from '../../shared/component-bases/base-form-step';
 
 @Component({
   selector: 'app-step-basic',
@@ -13,18 +11,15 @@ import { formErrors } from '../../shared/models/errors';
   templateUrl: './step-basic.html',
   styleUrl: './step-basic.scss',
 })
-export class StepBasic implements OnInit, OnDestroy {
-  public basicInfoForm: FormGroup;
+export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
+  public override form: FormGroup;
   public showPhoneField = false;
   public countries = countries;
-  private destroy$ = new Subject<void>();
-  private errors = formErrors;
   private fb = inject(FormBuilder);
-  private dataService = inject(Registration);
-  private router = inject(Router);
 
   constructor() {
-    this.basicInfoForm = this.createForm();
+    super();
+    this.form = this.createForm();
   }
 
   public ngOnInit(): void {
@@ -33,30 +28,24 @@ export class StepBasic implements OnInit, OnDestroy {
     
     if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
     if (currentData.basicInfo) {
-      setTimeout(()=>this.basicInfoForm.patchValue({...currentData.basicInfo}));
+      setTimeout(()=>this.form.patchValue({...currentData.basicInfo}));
       if (currentData.basicInfo.country) {
         this.showPhoneField = true;
       }
     }
 
-    this.dataService.updateData({ basicInfo: { ...this.basicInfoForm.value, valid: false } });
+    this.dataService.updateData({ basicInfo: { ...this.form.value, valid: false } });
 
-    // Отслеживаем изменения формы, дебаунс для того чтобы не отслеживать постоянно, а только когда завершили ввод чего-то
-    this.basicInfoForm.valueChanges
-      .pipe(takeUntil(this.destroy$),
-            debounceTime(1000))
-      .subscribe(value => {
-        this.dataService.updateData({ basicInfo: value });
-    });
+    this.subscribeToFormChanges('basic');
 
     // Отслеживаем изменения country, чтоб отображать ввод телефона
-    this.basicInfoForm.get('country')?.valueChanges
+    this.form.get('country')?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(country => {
         this.showPhoneField = !!country;
 
         if (!country) {
-          this.basicInfoForm.patchValue({ phone: '' });
+          this.form.patchValue({ phone: '' });
         }
     })
   }
@@ -73,36 +62,6 @@ export class StepBasic implements OnInit, OnDestroy {
     });
   }
 
-  getErrorMessage(fieldName: string): string {
-    const control = this.basicInfoForm.get(fieldName);
-    if (!control || !control.errors) return '';
-
-    const errors = control.errors;
-
-    for (const errorKey in errors) {
-      if (this.errors[errorKey]) {
-        let message = this.errors[errorKey];
-        switch (errorKey) {
-          case 'minlength':
-            message += errors[errorKey].requiredLength;
-            break;
-          case 'pattern':
-            switch (fieldName) {
-              case ('name'):
-                message += '. Имя не должно содержать спец. символы';
-                break;
-              case ('email'):
-                message += ' email';
-                break;
-            }
-        }
-        return message;
-      }
-    }
-
-    return 'Некорректное значение';
-  }
-
   public onCountryChange(countryCode: string): void {
     // по смене страны что делать с отображением номера ->
     this.showPhoneField = !!countryCode;
@@ -110,8 +69,8 @@ export class StepBasic implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     // переход к additional
-    if (this.basicInfoForm.valid) {
-      this.dataService.updateData({ basicInfo: { ...this.basicInfoForm.value, valid: true } });
+    if (this.form.valid) {
+      this.dataService.updateData({ basicInfo: { ...this.form.value, valid: true } });
       this.router.navigate(['/signup', 'additional']);
     } else {
       this.markFormGroupTouched();
@@ -122,22 +81,4 @@ export class StepBasic implements OnInit, OnDestroy {
   public goBack(): void {
     this.router.navigate(['/signup', 'method']);
   }
-
-  private markFormGroupTouched(): void {
-    Object.keys(this.basicInfoForm.controls).forEach(key => {
-      const control = this.basicInfoForm.get(key);
-      control?.markAsTouched();
-    });
-  }
-
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  // геттеры возможно пригодятся
-  public get email() { return this.basicInfoForm.get('email'); }
-  public get name() { return this.basicInfoForm.get('name'); }
-  public get country() { return this.basicInfoForm.get('country'); }
-  public get phone() { return this.basicInfoForm.get('phone'); }
 }

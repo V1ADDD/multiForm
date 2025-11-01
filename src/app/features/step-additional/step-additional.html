@@ -1,16 +1,13 @@
 <div class="step-container">
   <h2>Дополнительные данные</h2>
-  <form [formGroup]="additionalInfoForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <app-custom-input
       formControlName="addressCountry"
       [label]="'Страна'"
       [name]="'addressCountry'"
       [type]="'text'"
       [errorMes]="getErrorMessage('addressCountry')"
-      [invalid]="
-        additionalInfoForm.get('addressCountry')?.invalid &&
-        (additionalInfoForm.get('addressCountry')?.dirty || additionalInfoForm.get('addressCountry')?.touched)
-      "
+      [invalid]="isFieldInvalid('addressCountry')"
     ></app-custom-input>
     <app-custom-input
       formControlName="addressCity"
@@ -18,10 +15,7 @@
       [name]="'addressCity'"
       [type]="'text'"
       [errorMes]="getErrorMessage('addressCity')"
-      [invalid]="
-        additionalInfoForm.get('addressCity')?.invalid &&
-        (additionalInfoForm.get('addressCity')?.dirty || additionalInfoForm.get('addressCity')?.touched)
-      "
+      [invalid]="isFieldInvalid('addressCity')"
     ></app-custom-input>
     <app-custom-input
       formControlName="addressStreet"
@@ -29,10 +23,7 @@
       [name]="'addressStreet'"
       [type]="'text'"
       [errorMes]="getErrorMessage('addressStreet')"
-      [invalid]="
-        additionalInfoForm.get('addressStreet')?.invalid &&
-        (additionalInfoForm.get('addressStreet')?.dirty || additionalInfoForm.get('addressStreet')?.touched)
-      "
+      [invalid]="isFieldInvalid('addressStreet')"
     ></app-custom-input>
 
     <app-custom-input
@@ -43,10 +34,7 @@
       [min]="minDate"
       [max]="(maxDate | date:'yyyy-MM-dd') || undefined"
       [errorMes]="getErrorMessage('birthDate')"
-      [invalid]="
-        additionalInfoForm.get('birthDate')?.invalid &&
-        (additionalInfoForm.get('birthDate')?.dirty || additionalInfoForm.get('birthDate')?.touched)
-      "
+      [invalid]="isFieldInvalid('birthDate')"
     ></app-custom-input>
 
     <app-custom-input
@@ -55,10 +43,7 @@
       [name]="'gender'"
       [type]="'select'"
       [errorMes]="getErrorMessage('gender')"
-      [invalid]="
-        additionalInfoForm.get('gender')?.invalid &&
-        (additionalInfoForm.get('gender')?.dirty || additionalInfoForm.get('gender')?.touched)
-      "
+      [invalid]="isFieldInvalid('gender')"
     ></app-custom-input>
 
     @if (showParentFields) {
@@ -68,10 +53,7 @@
         [name]="'parentName'"
         [type]="'text'"
         [errorMes]="getErrorMessage('parentName')"
-        [invalid]="
-            additionalInfoForm.get('parentName')?.invalid &&
-            (additionalInfoForm.get('parentName')?.dirty || additionalInfoForm.get('parentName')?.touched)
-        "
+        [invalid]="isFieldInvalid('parentName')"
       ></app-custom-input>
       <app-custom-input
         formControlName="parentEmail"
@@ -79,17 +61,14 @@
         [name]="'parentEmail'"
         [type]="'email'"
         [errorMes]="getErrorMessage('parentEmail')"
-        [invalid]="
-            additionalInfoForm.get('parentEmail')?.invalid &&
-            (additionalInfoForm.get('parentEmail')?.dirty || additionalInfoForm.get('parentEmail')?.touched)
-        "
+        [invalid]="isFieldInvalid('parentEmail')"
       ></app-custom-input>
     }
 
     <div class="navigation-buttons">
       <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
 
-      <button type="submit" class="btn-primary" [disabled]="!additionalInfoForm.valid">Далее</button>
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">Далее</button>
     </div>
   </form>
 </div>

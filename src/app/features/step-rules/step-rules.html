@@ -1,16 +1,13 @@
 <div class="step-container">
   <h2>Подтверждение правил сервиса</h2>
-  <form [formGroup]="rulesInfoForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <app-custom-input
         formControlName="acceptTerms"
         [label]="'Я принимаю условия пользовательского соглашения'"
         [name]="'acceptTerms'"
         [type]="'checkbox'"
         [errorMes]="getErrorMessage('acceptTerms')"
-        [invalid]="
-            rulesInfoForm.get('acceptTerms')?.invalid &&
-            (rulesInfoForm.get('acceptTerms')?.dirty || rulesInfoForm.get('acceptTerms')?.touched)
-        "
+        [invalid]="isFieldInvalid('acceptTerms')"
     ></app-custom-input>
     <app-custom-input
         formControlName="acceptPrivacy"
@@ -18,10 +15,7 @@
         [name]="'acceptPrivacy'"
         [type]="'checkbox'"
         [errorMes]="getErrorMessage('acceptPrivacy')"
-        [invalid]="
-            rulesInfoForm.get('acceptPrivacy')?.invalid &&
-            (rulesInfoForm.get('acceptPrivacy')?.dirty || rulesInfoForm.get('acceptPrivacy')?.touched)
-        "
+        [invalid]="isFieldInvalid('acceptPrivacy')"
     ></app-custom-input>
     <app-custom-input
         formControlName="subscribe"
@@ -29,16 +23,13 @@
         [name]="'subscribe'"
         [type]="'checkbox'"
         [errorMes]="getErrorMessage('subscribe')"
-        [invalid]="
-            rulesInfoForm.get('subscribe')?.invalid &&
-            (rulesInfoForm.get('subscribe')?.dirty || rulesInfoForm.get('subscribe')?.touched)
-        "
+        [invalid]="isFieldInvalid('subscribe')"
     ></app-custom-input>
 
     <div class="navigation-buttons">
       <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
 
-      <button type="submit" class="btn-primary" [disabled]="!rulesInfoForm.valid">Далее</button>
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">Далее</button>
     </div>
   </form>
 </div>
