@@ -1,5 +1,4 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { RegistrationData } from '../../shared/models/registration-types';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { mockUser } from '../../shared/models/mock-data';
 import { BaseFormStep } from '../../shared/component-bases/base-form-step';
@@ -12,7 +11,6 @@ import { BaseFormStep } from '../../shared/component-bases/base-form-step';
 })
 export class SignUp extends BaseFormStep implements OnInit, OnDestroy {
   protected override form: FormGroup;
-  public selectedMethod: 'email' | 'social' | null = null;
   private fb = inject(FormBuilder);
 
   constructor() {
@@ -39,18 +37,16 @@ export class SignUp extends BaseFormStep implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      this.dataService.updateData(this.form.value);
       if (this.form.get('method')?.value === 'email') {
+        this.dataService.updateData(this.form.value);
         this.router.navigate(['/signup', 'basic']);
+      }
+      else {
+        this.dataService.updateData(mockUser);
+        this.router.navigate(['/signup', 'additional']);
       }
     } else {
       this.markFormGroupTouched();
     }
-  }
-
-  public mockSocialLogin(): void {
-    const mockData: RegistrationData = mockUser;
-    this.dataService.updateData(mockData);
-    this.router.navigate(['/signup', 'additional']);
   }
 }

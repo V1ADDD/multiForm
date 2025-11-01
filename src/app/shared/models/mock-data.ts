@@ -1,6 +1,8 @@
 import { Country, RegistrationData } from "./registration-types";
 
-// список стран для выбора
+export const emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+export const namePattern = '^[a-zA-Zа-яА-Я0-9]+$';
+
 export const countries: Country[] = [
     { code: 'by', name: 'Беларусь', phoneCode: '+375' },
     { code: 'ru', name: 'Россия', phoneCode: '+7' },
@@ -19,7 +21,6 @@ export const genders: string[] = [
     'Другой'
 ]
 
-// моковый юсер
 export const mockUser: RegistrationData = {
     method: 'social',
     basicInfo: {

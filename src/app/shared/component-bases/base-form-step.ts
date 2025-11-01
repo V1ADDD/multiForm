@@ -27,7 +27,7 @@ export abstract class BaseFormStep implements OnInit, OnDestroy {
   protected subscribeToFormChanges(step: RegistrationStep): void {
     this.form.valueChanges.pipe(
       takeUntil(this.destroy$),
-      debounceTime(1000)
+      debounceTime(500)
     ).subscribe(value => {
         switch (step) {
             case 'method':

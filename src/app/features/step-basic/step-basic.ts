@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs';
-import { countries } from '../../shared/models/mock-data';
+import { countries, emailPattern, namePattern } from '../../shared/models/mock-data';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { BaseFormStep } from '../../shared/component-bases/base-form-step';
 
@@ -23,10 +23,11 @@ export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    // Подгружаем значения с ls
     const currentData = this.dataService.getCurrentData();
     
+    // Возврат к другой странице, если не тот метод
     if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
+
     if (currentData.basicInfo) {
       setTimeout(()=>this.form.patchValue({...currentData.basicInfo}));
       if (currentData.basicInfo.country) {
@@ -51,11 +52,8 @@ export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
   }
 
   private createForm(): FormGroup {
-    // валидация email, name через регехи и прочая валидация
-    const customEmailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
-    const namePattern = '^[a-zA-Zа-яА-Я0-9]+$';
     return this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(customEmailPattern)]],
+      email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       name: ['', [Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]],
       country: ['', Validators.required],
       phone: ['']
@@ -63,12 +61,10 @@ export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
   }
 
   public onCountryChange(countryCode: string): void {
-    // по смене страны что делать с отображением номера ->
     this.showPhoneField = !!countryCode;
   }
 
   public onSubmit(): void {
-    // переход к additional
     if (this.form.valid) {
       this.dataService.updateData({ basicInfo: { ...this.form.value, valid: true } });
       this.router.navigate(['/signup', 'additional']);
@@ -77,7 +73,6 @@ export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
     }
   }
 
-  // возвращаемся к началу
   public goBack(): void {
     this.router.navigate(['/signup', 'method']);
   }

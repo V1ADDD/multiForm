@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs';
 import { DatePipe, Location } from '@angular/common';
 import { DateValidators } from '../../shared/models/date-validators';
 import { BaseFormStep } from '../../shared/component-bases/base-form-step';
+import { emailPattern, namePattern } from '../../shared/models/mock-data';
 
 @Component({
   selector: 'app-step-additional',
@@ -28,13 +29,15 @@ export class StepAdditional extends BaseFormStep implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
+
+    // Возврат к другой странице, если не тот метод или невалидность предыдущих форм
     if (!currentData.method) this.router.navigate(['/signup', 'method']);
     if (!currentData.basicInfo?.valid) this.location.back();
     
     if (currentData.additionalInfo) {
       setTimeout(()=>this.form.patchValue({...currentData.additionalInfo}));
       if (currentData.additionalInfo.birthDate && 
-          this.getAge(new Date(currentData.additionalInfo.birthDate))) 
+          this.getAge(new Date(currentData.additionalInfo.birthDate)) < 18) 
       {
         this.showParentFields = true;
       }
@@ -56,10 +59,8 @@ export class StepAdditional extends BaseFormStep implements OnInit, OnDestroy {
             parentName?.clearValidators();
             parentEmail?.clearValidators();
           } else {
-            const customEmailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
-            const namePattern = '^[a-zA-Zа-яА-Я0-9]+$';
             parentName?.setValidators([Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]);
-            parentEmail?.setValidators([Validators.required, Validators.pattern(customEmailPattern)]);
+            parentEmail?.setValidators([Validators.required, Validators.pattern(emailPattern)]);
           }
           parentName?.updateValueAndValidity();
           parentEmail?.updateValueAndValidity();
@@ -87,8 +88,7 @@ export class StepAdditional extends BaseFormStep implements OnInit, OnDestroy {
       this.markFormGroupTouched();
     }
   }
-
-  // возвращаемся к началу
+  
   public goBack(): void {
     this.router.navigate(['/signup', 'basic']);
   }

@@ -6,6 +6,7 @@
       }
     </label>
   }
+
   @if (type() === 'select') {
     <select id="{{ name() }}" (change)="onInputChange($event)" [value]="value" [class.error]="invalid()">
       <option value="">Пожалуйста, выберите</option>
@@ -34,6 +35,7 @@
       [class.error]="invalid()"
     />
   }
+  
   @if (type() === 'checkbox') {
     <label [for]="name()">{{ label() }}
       @if (required()) {

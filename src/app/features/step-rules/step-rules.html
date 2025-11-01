@@ -10,6 +10,7 @@
         [invalid]="isFieldInvalid('acceptTerms')"
         [required]="true"
     ></app-custom-input>
+
     <app-custom-input
         formControlName="acceptPrivacy"
         [label]="'Я согласен на обработку персональных данных'"
@@ -19,6 +20,7 @@
         [invalid]="isFieldInvalid('acceptPrivacy')"
         [required]="true"
     ></app-custom-input>
+
     <app-custom-input
         formControlName="subscribe"
         [label]="'Подписаться на рассылку'"
@@ -30,8 +32,7 @@
 
     <div class="navigation-buttons">
       <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
-
-      <button type="submit" class="btn-primary" [disabled]="!form.valid">Далее</button>
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">Отправить</button>
     </div>
   </form>
 </div>

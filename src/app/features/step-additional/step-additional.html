@@ -10,6 +10,7 @@
       [invalid]="isFieldInvalid('addressCountry')"
       [required]="true"
     ></app-custom-input>
+
     <app-custom-input
       formControlName="addressCity"
       [label]="'Город'"
@@ -19,6 +20,7 @@
       [invalid]="isFieldInvalid('addressCity')"
       [required]="true"
     ></app-custom-input>
+
     <app-custom-input
       formControlName="addressStreet"
       [label]="'Улица'"
@@ -61,6 +63,7 @@
         [invalid]="isFieldInvalid('parentName')"
         [required]="true"
       ></app-custom-input>
+
       <app-custom-input
         formControlName="parentEmail"
         [label]="'Email законного представителя'"
@@ -74,7 +77,6 @@
 
     <div class="navigation-buttons">
       <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
-
       <button type="submit" class="btn-primary" [disabled]="!form.valid">Далее</button>
     </div>
   </form>

@@ -1,7 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
-import { formErrors } from '../../shared/models/errors';
 import { Location } from '@angular/common';
 import { BaseFormStep } from '../../shared/component-bases/base-form-step';
 
@@ -16,7 +15,6 @@ export class StepRules extends BaseFormStep implements OnInit, OnDestroy {
 
   private fb = inject(FormBuilder);
   private location = inject(Location);
-  private errors = formErrors;
 
   constructor() {
     super();
@@ -25,6 +23,8 @@ export class StepRules extends BaseFormStep implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const currentData = this.dataService.getCurrentData();
+
+    // Возврат к другой странице, если не тот метод или невалидность предыдущих форм
     if (!currentData.method) this.router.navigate(['/signup', 'method']);
     if (!currentData.additionalInfo?.valid || !currentData.basicInfo?.valid) this.location.back();
     
