@@ -1,35 +1,45 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs';
+import { debounceTime } from 'rxjs';
 import { countries, emailPattern, namePattern } from '../../shared/models/mock-data';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
-import { BaseFormStep } from '../../shared/component-bases/base-form-step';
+import { Registration } from '../../shared/services/registration';
+import { Router } from '@angular/router';
+import { FormError } from '../../shared/services/form-error';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-step-basic',
   imports: [ReactiveFormsModule, CustomInput],
   templateUrl: './step-basic.html',
   styleUrl: './step-basic.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
-  public override form: FormGroup;
+export class StepBasic implements OnInit {
+  public form!: FormGroup;
   public showPhoneField = false;
   public countries = countries;
-  private fb = inject(FormBuilder);
 
-  constructor() {
-    super();
-    this.form = this.createForm();
-  }
+  private fb = inject(FormBuilder);
+  private destroyRef = inject(DestroyRef);
+  private dataService = inject(Registration);
+  private router = inject(Router);
+  private errorService = inject(FormError);
 
   public ngOnInit(): void {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.pattern(emailPattern)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]],
+      country: ['', Validators.required],
+      phone: ['']
+    });
     const currentData = this.dataService.getCurrentData();
     
     // Возврат к другой странице, если не тот метод
     if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
 
     if (currentData.basicInfo) {
-      setTimeout(()=>this.form.patchValue({...currentData.basicInfo}));
+      this.form.patchValue({...currentData.basicInfo});
       if (currentData.basicInfo.country) {
         this.showPhoneField = true;
       }
@@ -37,11 +47,14 @@ export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
 
     this.dataService.updateData({ basicInfo: { ...this.form.value, valid: false } });
 
-    this.subscribeToFormChanges('basic');
+    this.form.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      debounceTime(500)
+    ).subscribe(value => this.dataService.updateData({ basicInfo: value }));
 
     // Отслеживаем изменения country, чтоб отображать ввод телефона
     this.form.get('country')?.valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(country => {
         this.showPhoneField = !!country;
 
@@ -51,29 +64,24 @@ export class StepBasic extends BaseFormStep implements OnInit, OnDestroy {
     })
   }
 
-  private createForm(): FormGroup {
-    return this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(emailPattern)]],
-      name: ['', [Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]],
-      country: ['', Validators.required],
-      phone: ['']
-    });
-  }
-
-  public onCountryChange(countryCode: string): void {
-    this.showPhoneField = !!countryCode;
-  }
-
   public onSubmit(): void {
     if (this.form.valid) {
       this.dataService.updateData({ basicInfo: { ...this.form.value, valid: true } });
       this.router.navigate(['/signup', 'additional']);
     } else {
-      this.markFormGroupTouched();
+      this.form.markAllAsTouched();
     }
   }
 
   public goBack(): void {
     this.router.navigate(['/signup', 'method']);
+  }
+
+  public getErrorMessage(fieldName: string): string {
+    return this.errorService.getErrorMessage(this.form.get(fieldName), fieldName);
+  }
+
+  public isFieldInvalid(fieldName: string): boolean {
+    return this.errorService.isFieldInvalid(this.form.get(fieldName));
   }
 }

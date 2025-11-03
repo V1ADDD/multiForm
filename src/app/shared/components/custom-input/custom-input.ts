@@ -1,22 +1,24 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, input } from '@angular/core';
 import { countries, genders } from '../../models/mock-data';
 import { LowerCasePipe } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-input',
-  imports: [LowerCasePipe, NgxMaskDirective],
+  imports: [LowerCasePipe, NgxMaskDirective, FormsModule],
   templateUrl: './custom-input.html',
   styleUrl: './custom-input.scss',
   providers: [
+    
+    provideNgxMask(),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(()=>CustomInput),
       multi: true
     },
-    provideNgxMask()
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomInput implements ControlValueAccessor {
   public value: string | boolean = '';
@@ -48,7 +50,7 @@ export class CustomInput implements ControlValueAccessor {
     if (this.type() === 'checkbox') {
       const boolValue = !!value;
       this.value = boolValue;
-    } else {
+    } else {      
       this.value = value || '';
     }
   }

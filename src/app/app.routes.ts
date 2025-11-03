@@ -1,8 +1,4 @@
 import { Routes } from '@angular/router';
-import { SignUp } from './features/sign-up/sign-up';
-import { StepBasic } from './features/step-basic/step-basic';
-import { StepAdditional } from './features/step-additional/step-additional';
-import { StepRules } from './features/step-rules/step-rules';
 
 export const routes: Routes = [
     { path: '', redirectTo:'/signup', pathMatch: 'full'},
@@ -16,19 +12,19 @@ export const routes: Routes = [
             },
             {
                 path: 'method',
-                component: SignUp
+                loadComponent: () => import('./features/sign-up/sign-up').then(m => m.SignUp)
             },
             {
                 path: 'basic',
-                component: StepBasic
+                loadComponent: () => import('./features/step-basic/step-basic').then(m => m.StepBasic)
             },
             {
                 path: 'additional',
-                component: StepAdditional
+                loadComponent: () => import('./features/step-additional/step-additional').then(m => m.StepAdditional)
             },
             {
                 path: 'rules',
-                component: StepRules
+                loadComponent: () => import('./features/step-rules/step-rules').then(m => m.StepRules)
             }
         ] 
     },

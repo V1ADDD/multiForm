@@ -1,36 +1,39 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { mockUser } from '../../shared/models/mock-data';
-import { BaseFormStep } from '../../shared/component-bases/base-form-step';
+import { Router } from '@angular/router';
+import { Registration } from '../../shared/services/registration';
+import { debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-sign-up',
   imports: [ReactiveFormsModule],
   templateUrl: './sign-up.html',
-  styleUrl: './sign-up.scss'
+  styleUrl: './sign-up.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SignUp extends BaseFormStep implements OnInit, OnDestroy {
-  protected override form: FormGroup;
+export class SignUp implements OnInit {
+  public form!: FormGroup;
   private fb = inject(FormBuilder);
 
-  constructor() {
-    super();
-    this.form = this.createForm();
-  }
+  private destroyRef = inject(DestroyRef);
+  private dataService = inject(Registration);
+  private router = inject(Router);
 
-  public override ngOnInit(): void {
-    this.dataService.clearData();
-    this.subscribeToFormChanges('method');
-  }
-
-  private createForm(): FormGroup {
-    return this.fb.group({
+  public ngOnInit(): void {
+    this.form = this.fb.group({
       method: ['', Validators.required]
     });
+    this.dataService.clearData();
+    this.form.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      debounceTime(500)
+    ).subscribe(value => this.dataService.updateData(value));
   }
 
   public selectMethod(method: 'email' | 'social'): void {
-    this.form.patchValue({
+    this.form?.patchValue({
       method
     });
   }
@@ -46,7 +49,7 @@ export class SignUp extends BaseFormStep implements OnInit, OnDestroy {
         this.router.navigate(['/signup', 'additional']);
       }
     } else {
-      this.markFormGroupTouched();
+      this.form.markAllAsTouched();
     }
   }
 }

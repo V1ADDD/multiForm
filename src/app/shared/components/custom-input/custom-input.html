@@ -8,32 +8,46 @@
   }
 
   @if (type() === 'select') {
-    <select id="{{ name() }}" (change)="onInputChange($event)" [value]="value" [class.error]="invalid()">
+    <select id="{{ name() }}" (change)="onInputChange($event)" [class.error]="invalid()">
       <option value="">Пожалуйста, выберите</option>
       @if (name() === 'gender') {
         @for (gender of genders; track gender) {
-          <option value="{{ gender }}">{{ gender }}</option>
+          <option value="{{ gender }}" [selected]="value === gender">{{ gender }}</option>
         }
       }
       @else if (name() === 'country') {
         @for (country of countries; track country.phoneCode) {
-          <option value="{{ country.code }}">({{ country.phoneCode }}) {{ country.name }}</option>
+          <option value="{{ country.code }}" [selected]="value === country.code">({{ country.phoneCode }}) {{ country.name }}</option>
         }
       }
     </select>
   } @else {
-    <input
-      (input)="onInputChange($event)"
-      id="{{ name() }}"
-      type="{{ type() }}"
-      min="{{ min() }}"
-      max="{{ max() }}"
-      placeholder="Введите {{ label() | lowercase }}"
-      [value]="type() !== 'checkbox' ? value : ''" 
-      [checked]="type() === 'checkbox' ? value : ''"
-      [mask]="inputMask()"
-      [class.error]="invalid()"
-    />
+    @if (type() === 'tel') {
+      <input
+        (input)="onInputChange($event)"
+        id="{{ name() }}"
+        type="{{ type() }}"
+        placeholder="Введите {{ label() | lowercase }}"
+        [value]="value" 
+        [(ngModel)]="value"
+        [mask]="inputMask()"
+        [class.error]="invalid()"
+      />
+    } @else {
+      <input
+        (input)="onInputChange($event)"
+        id="{{ name() }}"
+        type="{{ type() }}"
+        min="{{ min() }}"
+        max="{{ max() }}"
+        placeholder="Введите {{ label() | lowercase }}"
+        [value]="type() !== 'checkbox' ? value : ''" 
+        [checked]="type() === 'checkbox' ? value : ''"
+        [class.error]="invalid()"
+      />
+    }
+
+    
   }
   
   @if (type() === 'checkbox') {
