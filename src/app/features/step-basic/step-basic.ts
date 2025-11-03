@@ -36,7 +36,7 @@ export class StepBasic implements OnInit {
     const currentData = this.dataService.getCurrentData();
     
     // Возврат к другой странице, если не тот метод
-    if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
+    //if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
 
     if (currentData.basicInfo) {
       this.form.patchValue({...currentData.basicInfo});
@@ -67,7 +67,9 @@ export class StepBasic implements OnInit {
   public onSubmit(): void {
     if (this.form.valid) {
       this.dataService.updateData({ basicInfo: { ...this.form.value, valid: true } });
-      this.router.navigate(['/signup', 'additional']);
+      const currentUrl = this.router.url.split('/');
+      currentUrl.pop();
+      this.router.navigate([currentUrl.join('/'), 'additional']);
     } else {
       this.form.markAllAsTouched();
     }

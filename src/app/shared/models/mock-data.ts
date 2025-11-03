@@ -22,7 +22,7 @@ export const genders: string[] = [
 ]
 
 export const mockUser: RegistrationData = {
-    method: 'social',
+    method: 'socials',
     basicInfo: {
         email: 'john@doe.com',
         name: 'John',

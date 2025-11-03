@@ -1,6 +1,6 @@
 // Данные общие
 export interface RegistrationData {
-    method?: 'email' | 'social',
+    method?: string,
     basicInfo?: BasicInfo,
     additionalInfo?: AdditionalInfo,
     confirmation?: Confirmation

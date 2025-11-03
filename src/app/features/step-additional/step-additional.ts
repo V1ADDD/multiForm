@@ -42,8 +42,8 @@ export class StepAdditional implements OnInit {
     });
     const currentData = this.dataService.getCurrentData();
     // Возврат к другой странице, если не тот метод или невалидность предыдущих форм
-    if (!currentData.method) this.router.navigate(['/signup', 'method']);
-    if (!currentData.basicInfo?.valid) this.location.back();
+    // if (!currentData.method) this.router.navigate(['/signup', 'method']);
+    // if (!currentData.basicInfo?.valid) this.location.back();
     
     if (currentData.additionalInfo) {
       this.form.patchValue({...currentData.additionalInfo});
