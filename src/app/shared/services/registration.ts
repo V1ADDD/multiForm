@@ -41,4 +41,18 @@ export class Registration {
     this.data = { };
     this.dataSubject.next(this.data);
   }
+
+  isPreviousStepValid(): boolean | undefined {
+    const currentUrl = window.location.href;
+    
+    if (currentUrl.includes('/additional')) {
+      return this.data.basicInfo?.valid;
+    }
+    
+    if (currentUrl.includes('/rules')) {
+      return this.data.additionalInfo?.valid;
+    }
+    
+    return true;
+  }
 }

@@ -34,9 +34,6 @@ export class StepBasic implements OnInit {
       phone: ['']
     });
     const currentData = this.dataService.getCurrentData();
-    
-    // Возврат к другой странице, если не тот метод
-    //if (currentData.method !== 'email') this.router.navigate(['/signup', 'method']);
 
     if (currentData.basicInfo) {
       this.form.patchValue({...currentData.basicInfo});
@@ -45,12 +42,14 @@ export class StepBasic implements OnInit {
       }
     }
 
-    this.dataService.updateData({ basicInfo: { ...this.form.value, valid: false } });
-
     this.form.valueChanges.pipe(
       takeUntilDestroyed(this.destroyRef),
       debounceTime(500)
-    ).subscribe(value => this.dataService.updateData({ basicInfo: value }));
+    ).subscribe(value => 
+      {
+        value.valid = this.form.valid;
+        this.dataService.updateData({ basicInfo: value })
+    });
 
     // Отслеживаем изменения country, чтоб отображать ввод телефона
     this.form.get('country')?.valueChanges
@@ -66,7 +65,6 @@ export class StepBasic implements OnInit {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      this.dataService.updateData({ basicInfo: { ...this.form.value, valid: true } });
       const currentUrl = this.router.url.split('/');
       currentUrl.pop();
       this.router.navigate([currentUrl.join('/'), 'additional']);

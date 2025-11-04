@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { debounceTime } from 'rxjs';
-import { DatePipe, Location } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { DateValidators } from '../../shared/models/date-validators';
 import { emailPattern, namePattern } from '../../shared/models/mock-data';
 import { Registration } from '../../shared/services/registration';
@@ -24,7 +24,6 @@ export class StepAdditional implements OnInit {
   public maxDate = new Date();
 
   private fb = inject(FormBuilder);
-  private location = inject(Location);
   private destroyRef = inject(DestroyRef);
   private dataService = inject(Registration);
   private router = inject(Router);
@@ -41,9 +40,6 @@ export class StepAdditional implements OnInit {
       parentEmail: ['']
     });
     const currentData = this.dataService.getCurrentData();
-    // Возврат к другой странице, если не тот метод или невалидность предыдущих форм
-    // if (!currentData.method) this.router.navigate(['/signup', 'method']);
-    // if (!currentData.basicInfo?.valid) this.location.back();
     
     if (currentData.additionalInfo) {
       this.form.patchValue({...currentData.additionalInfo});
@@ -54,12 +50,13 @@ export class StepAdditional implements OnInit {
       }
     }
 
-    this.dataService.updateData({ additionalInfo: { ...this.form.value, valid: false } });
-
     this.form.valueChanges.pipe(
       takeUntilDestroyed(this.destroyRef),
       debounceTime(500)
-    ).subscribe(value => this.dataService.updateData({ additionalInfo: value }));
+    ).subscribe(value => {
+        value.valid = this.form.valid;
+        this.dataService.updateData({ additionalInfo: value })
+    });
 
     this.form.get('birthDate')?.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -84,15 +81,18 @@ export class StepAdditional implements OnInit {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      this.dataService.updateData({ additionalInfo: { ...this.form.value, valid: true } });
-      this.router.navigate(['/signup', 'rules']);
+      const currentUrl = this.router.url.split('/');
+      currentUrl.pop();
+      this.router.navigate([currentUrl.join('/'), 'rules']);
     } else {
       this.form.markAllAsTouched();
     }
   }
   
   public goBack(): void {
-    this.router.navigate(['/signup', 'basic']);
+    const currentUrl = this.router.url.split('/');
+    currentUrl.pop();
+    this.router.navigate([currentUrl.join('/'), 'basic']);
   }
 
   public getErrorMessage(fieldName: string): string {
@@ -101,6 +101,10 @@ export class StepAdditional implements OnInit {
 
   public isFieldInvalid(fieldName: string): boolean {
     return this.errorService.isFieldInvalid(this.form.get(fieldName));
+  }
+
+  public isFormValid(): boolean {
+    return this.form.valid;
   }
 
   private getAge(birthDate: Date): number {
