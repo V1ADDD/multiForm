@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
-import { debounceTime } from 'rxjs';
+import { debounceTime, merge } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { DateValidators } from '../../shared/models/date-validators';
 import { Registration } from '../../shared/services/registration';
@@ -45,13 +45,19 @@ export class StepAdditional implements OnInit {
       this.form.patchValue({...currentData.additionalInfo});
     }
 
-    this.form.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
-      debounceTime(500)
-    ).subscribe(value => {
+    const fieldChanges = Object.keys(this.form.controls).map(fieldName => 
+      this.form.get(fieldName)!.valueChanges.pipe(
+        debounceTime(500)
+      )
+    );
+
+    merge(...fieldChanges)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const value = { ...this.form.value };
         value.valid = this.form.valid;
-        this.dataService.updateData({ additionalInfo: value })
-    });
+        this.dataService.updateData({ additionalInfo: value });
+      });
   }
 
   public onSubmit(): void {

@@ -5,7 +5,7 @@ import { Registration } from '../../shared/services/registration';
 import { Router } from '@angular/router';
 import { FormError } from '../../shared/services/form-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs';
+import { debounceTime, merge } from 'rxjs';
 
 @Component({
   selector: 'app-step-rules',
@@ -35,10 +35,18 @@ export class StepRules implements OnInit {
       this.form.patchValue({...currentData.confirmation});
     }
 
-    this.form.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
-      debounceTime(500)
-    ).subscribe(value => this.dataService.updateData({ confirmation: value }));
+    const fieldChanges = Object.keys(this.form.controls).map(fieldName => 
+      this.form.get(fieldName)!.valueChanges.pipe(
+        debounceTime(500)
+      )
+    );
+
+    merge(...fieldChanges)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const value = { ...this.form.value };
+        this.dataService.updateData({ confirmation: value });
+      });
   }
 
   public onSubmit(): void {

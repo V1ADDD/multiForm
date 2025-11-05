@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime, merge } from 'rxjs';
 import { countries, emailPattern, namePattern } from '../../shared/models/mock-data';
 import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { Registration } from '../../shared/services/registration';
@@ -17,8 +17,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class StepBasic implements OnInit {
   public form!: FormGroup;
-  public showPhoneField = false;
   public countries = countries;
+
+  public showPhoneField = signal(false);
 
   private fb = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
@@ -36,27 +37,27 @@ export class StepBasic implements OnInit {
     const currentData = this.dataService.getCurrentData();
 
     if (currentData.basicInfo) {
+      this.showPhoneField.set(!!currentData.basicInfo.country);
       this.form.patchValue({...currentData.basicInfo});
-      if (currentData.basicInfo.country) {
-        this.showPhoneField = true;
-      }
     }
+    const fieldChanges = Object.keys(this.form.controls).map(fieldName => 
+      this.form.get(fieldName)!.valueChanges.pipe(
+        debounceTime(500)
+      )
+    );
 
-    this.form.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
-      debounceTime(500)
-    ).subscribe(value => 
-      {
+    merge(...fieldChanges)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const value = { ...this.form.value };
         value.valid = this.form.valid;
-        this.dataService.updateData({ basicInfo: value })
-    });
+        this.dataService.updateData({ basicInfo: value });
+      });
 
-    // Отслеживаем изменения country, чтоб отображать ввод телефона
     this.form.get('country')?.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(country => {
-        this.showPhoneField = !!country;
-
+        this.showPhoneField.set(!!country);
         if (!country) {
           this.form.patchValue({ phone: '' });
         }
