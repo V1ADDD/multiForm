@@ -1,0 +1,143 @@
+@use '../../shared/styles/variables' as v;
+
+.step-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: v.$label_color;
+}
+
+.method-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.method-card {
+    border: 2px solid v.$color_1;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: v.$background;
+
+    h3 {
+        margin: 0.5rem 0;
+        color: v.$label_color;
+    }
+
+    p {
+        margin: 0;
+        color: v.$label_color_2;
+        font-size: 0.9rem;
+    }
+
+    &:hover {
+        border-color: v.$color_2;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
+    }
+    &.selected {
+        border-color: v.$color_2;
+    }
+}
+
+.method-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.social-buttons {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid v.$color_1;
+    border-radius: 8px;
+    background: #f9f9f9;
+
+    p {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #666;
+    }
+}
+
+.social-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid v.$sec_border;
+    border-radius: 6px;
+    background: v.$background;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: v.$sec_background;
+        transform: translateY(-1px);
+    }
+
+    &.google:hover {
+        border-color: v.$error_color;
+    }
+
+    &.meta:hover {
+        border-color: v.$color_2;
+    }
+
+    &.github:hover {
+        border-color: v.$label_color;
+    }
+}
+
+.social-icon {
+    font-size: 1.2rem;
+}
+
+.navigation {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn-primary {
+    background: v.$color_2;
+    color: v.$background;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background: v.$color_2;
+    }
+
+    &:disabled {
+        background: v.$disabled_color;
+        cursor: not-allowed;
+    }
+}
+
+@media (max-width: 768px) {
+    .method-options {
+        grid-template-columns: 1fr;
+    }
+
+    .step-container {
+        padding: 1rem;
+    }
+}

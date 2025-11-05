@@ -1,0 +1,58 @@
+import { Injectable } from '@angular/core';
+import { RegistrationData } from '../models/registration-types';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class Registration {
+  private readonly STORAGE_KEY = 'registration_data';
+
+  private data: RegistrationData = this.loadFromStorage();
+  private dataSubject = new BehaviorSubject<RegistrationData>(this.data);
+
+  // Обновление данных в ls
+  public updateData(updates: Partial<RegistrationData>): void {
+    this.data = { ...this.data, ...updates };
+    this.saveToStorage();
+    this.dataSubject.next(this.data);
+    console.log(this.data)
+  }
+
+  // Получение текущих данных
+  public getCurrentData(): RegistrationData {
+    return { ...this.data };
+  }
+
+  // Сохранить в ls
+  private saveToStorage(): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+  }
+  
+  // Подгруаем с ls
+  private loadFromStorage(): RegistrationData {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    return stored ? JSON.parse(stored) : { };
+  }
+
+  // чистим
+  public clearData(): void {
+    localStorage.removeItem(this.STORAGE_KEY);
+    this.data = { };
+    this.dataSubject.next(this.data);
+  }
+
+  isPreviousStepValid(): boolean | undefined {
+    const currentUrl = window.location.href;
+    
+    if (currentUrl.includes('/additional')) {
+      return this.data.basicInfo?.valid;
+    }
+    
+    if (currentUrl.includes('/rules')) {
+      return this.data.additionalInfo?.valid;
+    }
+    
+    return true;
+  }
+}

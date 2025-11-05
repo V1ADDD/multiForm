@@ -1,0 +1,38 @@
+<div class="step-container">
+  <h2>Подтверждение правил сервиса</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-custom-input
+        formControlName="acceptTerms"
+        [label]="'Я принимаю условия пользовательского соглашения'"
+        [name]="'acceptTerms'"
+        [type]="'checkbox'"
+        [errorMes]="getErrorMessage('acceptTerms')"
+        [invalid]="isFieldInvalid('acceptTerms')"
+        [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+        formControlName="acceptPrivacy"
+        [label]="'Я согласен на обработку персональных данных'"
+        [name]="'acceptPrivacy'"
+        [type]="'checkbox'"
+        [errorMes]="getErrorMessage('acceptPrivacy')"
+        [invalid]="isFieldInvalid('acceptPrivacy')"
+        [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+        formControlName="subscribe"
+        [label]="'Подписаться на рассылку'"
+        [name]="'subscribe'"
+        [type]="'checkbox'"
+        [errorMes]="getErrorMessage('subscribe')"
+        [invalid]="isFieldInvalid('subscribe')"
+    ></app-custom-input>
+
+    <div class="navigation-buttons">
+      <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">Отправить</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,54 @@
+@use 'variables' as v;
+
+.form-field {
+  margin-bottom: 1.5rem;
+
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: v.$label_color;
+    & > a {
+      color: v.$error_color;
+    }
+  }
+
+  input[type='checkbox'] {
+    width: auto;
+  }
+
+  select, input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid v.$color_1;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: v.$background;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: v.$color_2;
+    }
+
+    &.error {
+      border-color: v.$error_color;
+    }
+
+    &:disabled {
+      background-color: v.$color_1;
+      cursor: not-allowed;
+    }
+  }
+
+  &.invalid {
+    label {
+      color: v.$error_color;
+    }
+  }
+}
+
+.error-message {
+  color: v.$error_color;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}

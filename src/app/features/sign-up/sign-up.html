@@ -1,0 +1,60 @@
+<div class="step-container">
+
+  <h2>Выберите способ регистрации</h2>
+  <div class="method-options">
+
+    <div
+      class="method-card"
+      [class.selected]="method() === 'email'"
+      (click)="method.set('email')"
+      tabindex="0"
+      role="button"
+    >
+      <div class="method-icon">📧</div>
+      <h3>Email</h3>
+      <p>Регистрация с помощью email</p>
+    </div>
+
+    <div
+      class="method-card"
+      [class.selected]="method() === 'social'"
+      (click)="method.set('social')"
+      tabindex="0"
+      role="button"
+    >
+      <div class="method-icon">🌐</div>
+      <h3>Социальные сети</h3>
+      <p>Быстрая регистрация через социальные сети</p>
+    </div>
+
+  </div>
+
+  <input type="hidden" formControlName="method" />
+  
+  @if (method() === 'social') {
+  <div class="social-buttons">
+    <p>Выберите социальную сеть:</p>
+    <div class="social-options">
+      <button class="social-btn google" routerLink="/signup/socials/additional">
+        <span class="social-icon">🤖</span>Google
+      </button>
+
+      <button class="social-btn meta" routerLink="/signup/socials/additional">
+        <span class="social-icon">Ⓜ️</span>Meta
+      </button>
+      
+      <button class="social-btn github" routerLink="/signup/socials/additional">
+        <span class="social-icon">👨🏻‍💻</span>Github
+      </button>
+    </div>
+  </div>
+  } 
+  
+  @if (method() === 'email') {
+  <div class="navigation">
+    <button class="btn-primary" routerLink="/signup/email/basic">
+      Продолжить с Email
+    </button>
+  </div>
+  }
+</div>

@@ -1,0 +1,20 @@
+@use '../../shared/styles/variables' as v;
+
+h2 {
+  margin-block: 2rem;
+  color: v.$label_color;
+}
+
+button {
+  background: v.$color_2;
+  color: v.$background;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.not-found-container {
+  text-align: center;
+}

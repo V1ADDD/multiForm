@@ -1,0 +1,83 @@
+<div class="step-container">
+  <h2>Дополнительные данные</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-custom-input
+      formControlName="addressCountry"
+      [label]="'Страна'"
+      [name]="'addressCountry'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('addressCountry')"
+      [invalid]="isFieldInvalid('addressCountry')"
+      [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="addressCity"
+      [label]="'Город'"
+      [name]="'addressCity'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('addressCity')"
+      [invalid]="isFieldInvalid('addressCity')"
+      [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="addressStreet"
+      [label]="'Улица'"
+      [name]="'addressStreet'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('addressStreet')"
+      [invalid]="isFieldInvalid('addressStreet')"
+      [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="birthDate"
+      [label]="'Дата рождения'"
+      [name]="'birthDate'"
+      [type]="'date'"
+      [min]="minDate"
+      [max]="(maxDate | date:'yyyy-MM-dd') || undefined"
+      [errorMes]="getErrorMessage('birthDate')"
+      [invalid]="isFieldInvalid('birthDate')"
+      [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="gender"
+      [label]="'Пол'"
+      [name]="'gender'"
+      [type]="'select'"
+      [errorMes]="getErrorMessage('gender')"
+      [invalid]="isFieldInvalid('gender')"
+      [required]="true"
+    ></app-custom-input>
+
+    @if (parentsRequired()) {
+      <app-custom-input
+        formControlName="parentName"
+        [label]="'Имя законного представителя'"
+        [name]="'parentName'"
+        [type]="'text'"
+        [errorMes]="getErrorMessage('parentName')"
+        [invalid]="isFieldInvalid('parentName')"
+        [required]="true"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="parentEmail"
+        [label]="'Email законного представителя'"
+        [name]="'parentEmail'"
+        [type]="'email'"
+        [errorMes]="getErrorMessage('parentEmail')"
+        [invalid]="isFieldInvalid('parentEmail')"
+        [required]="true"
+      ></app-custom-input>
+    }
+
+    <div class="navigation-buttons">
+      <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">Далее</button>
+    </div>
+  </form>
+</div>

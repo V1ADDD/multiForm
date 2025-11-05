@@ -1,0 +1,51 @@
+<div class="step-container">
+  <h2>Основные данные</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-custom-input
+      formControlName="email"
+      [label]="'Email'"
+      [name]="'email'"
+      [type]="'email'"
+      [errorMes]="getErrorMessage('email')"
+      [invalid]="isFieldInvalid('email')"
+      [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="name"
+      [label]="'Имя'"
+      [name]="'name'"
+      [type]="'text'"
+      [errorMes]="getErrorMessage('name')"
+      [invalid]="isFieldInvalid('name')"
+      [required]="true"
+    ></app-custom-input>
+
+    <app-custom-input
+      formControlName="country"
+      [label]="'Страна'"
+      [name]="'country'"
+      [type]="'select'"
+      [errorMes]="getErrorMessage('country')"
+      [invalid]="isFieldInvalid('country')"
+      [required]="true"
+    ></app-custom-input>
+
+    @if (showPhoneField()) {
+      <app-custom-input
+        formControlName="phone"
+        [label]="'Телефон'"
+        [name]="'phone'"
+        [type]="'tel'"
+        [errorMes]="getErrorMessage('phone')"
+        [inputMask]="'(000) 000-00-00'"
+        [invalid]="isFieldInvalid('phone')"
+      ></app-custom-input>
+    }
+
+    <div class="navigation-buttons">
+      <button type="button" class="btn-secondary" (click)="goBack()">Назад</button>
+      <button type="submit" class="btn-primary" [disabled]="!form.valid">Далее</button>
+    </div>
+  </form>
+</div>
