@@ -48,5 +48,8 @@ export const routes: Routes = [
             }
         ]
     },
-    { path: '**', redirectTo: 'signup/method' },
+    { 
+        path: '**',
+        loadComponent: () => import('./features/not-found/not-found').then(m => m.NotFound),
+    },
 ];
