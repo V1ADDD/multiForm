@@ -4,11 +4,11 @@ import { CustomInput } from '../../shared/components/custom-input/custom-input';
 import { debounceTime } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { DateValidators } from '../../shared/models/date-validators';
-import { emailPattern, namePattern } from '../../shared/models/mock-data';
 import { Registration } from '../../shared/services/registration';
 import { Router } from '@angular/router';
 import { FormError } from '../../shared/services/form-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { birthDateValidator } from '../../shared/validators/birthDateValidator';
 
 @Component({
   selector: 'app-step-additional',
@@ -19,7 +19,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class StepAdditional implements OnInit {
   public form!: FormGroup;
-  public showParentFields = false;
+  public showParentFields = true;
   public minDate = '1900-01-01';
   public maxDate = new Date();
 
@@ -38,16 +38,11 @@ export class StepAdditional implements OnInit {
       gender: ['', Validators.required],
       parentName: [''],
       parentEmail: ['']
-    });
+    }, { validators: birthDateValidator.bind(this) });
     const currentData = this.dataService.getCurrentData();
     
     if (currentData.additionalInfo) {
       this.form.patchValue({...currentData.additionalInfo});
-      if (currentData.additionalInfo.birthDate && 
-          this.getAge(new Date(currentData.additionalInfo.birthDate)) < 18) 
-      {
-        this.showParentFields = true;
-      }
     }
 
     this.form.valueChanges.pipe(
@@ -57,26 +52,6 @@ export class StepAdditional implements OnInit {
         value.valid = this.form.valid;
         this.dataService.updateData({ additionalInfo: value })
     });
-
-    this.form.get('birthDate')?.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(birthDate => {
-        if (!this.form.get('birthDate')?.invalid) {
-          this.showParentFields = this.getAge(new Date(birthDate)) < 18;
-          const parentName = this.form.get('parentName');
-          const parentEmail = this.form.get('parentEmail');
-          if (!this.showParentFields) {
-            this.form.patchValue({ parentName: '', parentEmail: '' });
-            parentName?.clearValidators();
-            parentEmail?.clearValidators();
-          } else {
-            parentName?.setValidators([Validators.required, Validators.minLength(2), Validators.pattern(namePattern)]);
-            parentEmail?.setValidators([Validators.required, Validators.pattern(emailPattern)]);
-          }
-          parentName?.updateValueAndValidity();
-          parentEmail?.updateValueAndValidity();
-        }
-    })
   }
 
   public onSubmit(): void {
@@ -107,14 +82,16 @@ export class StepAdditional implements OnInit {
     return this.form.valid;
   }
 
-  private getAge(birthDate: Date): number {
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
+  public parentsRequired(): boolean {
+    const parentEmail = this.form.get('parentEmail');
+    const parentName = this.form.get('parentName');
+    if (parentName?.validator && parentEmail?.validator) {
+      return true;
     }
-    return age;
+    else {
+      parentEmail?.setValue('');
+      parentName?.setValue('');
+      return false;
+    }
   }
 }
